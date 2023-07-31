@@ -25,7 +25,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2023071100;
-$plugin->requires = 2022041200;
+$plugin->version = 2023080101;
+$plugin->requires = 2020061500;
 $plugin->component = 'quizaccess_proctor';
 $plugin->maturity = MATURITY_STABLE;
+
+$plugin->dependencies = array(
+    'mod_quiz' => ANY_VERSION,
+);

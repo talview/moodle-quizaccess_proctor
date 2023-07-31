@@ -145,8 +145,10 @@ class quizaccess_proctor extends quiz_access_rule_base {
        
         // Get existing settings or create new settings if none exist.
         $quizsettings = quiz_settings::get_by_quiz_id($quiz->id);
-        $settings->proctortype = $quizsettings->get('proctortype');
-        $settings->tsbenabled = $quizsettings->get('tsbenabled');
+        if ($quizsettings) {
+            $settings->proctortype = $quizsettings->get('proctortype');
+            $settings->tsbenabled = $quizsettings->get('tsbenabled');
+        }
         if (empty($quizsettings)) {
             $quizsettings = new quiz_settings(0, $settings);
         } else {
@@ -161,7 +163,7 @@ class quizaccess_proctor extends quiz_access_rule_base {
             $proctordata->quizid = $quiz->id;
             $proctordata->cmid = $cm->id;
             $proctordata->proctortype = $quiz->proctortype;
-            $proctordata->tsbenabled = $quiz->tsbenabled;
+            $proctordata->tsbenabled = (isset($quiz->tsbenabled) && $quiz->tsbenabled) ? 1 : 0;
             $proctordata->usermodified = $USER->id;
 
             if($proctor = $DB->get_record('quizaccess_proctor', array('quizid'=> $quiz->id))) { 
