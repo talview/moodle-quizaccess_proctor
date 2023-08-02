@@ -51,8 +51,8 @@ class quizaccess_proctor_observer {
         global $DB;
         $quizaccess_proctor_setting_enabled = get_config('quizaccess_proctor', 'enableproctor');
         $payload = new \stdClass();
-        $payload->username = '';
-        $payload->password = '';
+        $payload->username = 'pranav.sreedhar+45-test-admin@talview.com';
+        $payload->password = 'Talview@123';
         $api_base_url = 'https://41c9-122-171-22-66.ngrok-free.app';
         if (!$quizaccess_proctor_setting_enabled
             || !$api_base_url

@@ -37,8 +37,8 @@ require_once($CFG->libdir . '/externallib.php');
  * Validate browser exam key and config key.
  *
  * @package    quizaccess_proctor
- * @author     Saranya Kanagaraj <saranyanathan.s@gmail.com>
- * @copyright  2021 Catalyst IT
+ * @author     Talview Inc.
+ * @copyright  Talview, 2023
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class validate_quiz_keys extends external_api {

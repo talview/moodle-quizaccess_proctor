@@ -18,8 +18,8 @@
  * List web services and external functions for plugin.
  *
  * @package    quizaccess_proctor
- * @author     Saranya Kanagaraj <saranyanathan.s@gmail.com>
- * @copyright  2021 Catalyst IT
+ * @author     Talview Inc.
+ * @copyright  Talview, 2023
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

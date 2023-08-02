@@ -18,8 +18,8 @@
  * Page to manipulate templates.
  *
  * @package    quizaccess_proctor
- * @author     Dmitrii Metelkin <dmitriim@catalyst-au.net>
- * @copyright  2020 Catalyst IT
+ * @author     Talview Inc.
+ * @copyright  Talview, 2023
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

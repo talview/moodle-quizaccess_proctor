@@ -18,8 +18,8 @@
  * Version information for the quizaccess_proctor plugin.
  *
  * @package    quizaccess_proctor
- * @author     Saranya Kanagaraj <saranyanathan.s@gmail.com>
- * @copyright  2023 Saranya Kanagaraj
+ * @author     Talview Inc.
+ * @copyright  Talview, 2023
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
