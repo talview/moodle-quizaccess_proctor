@@ -68,10 +68,17 @@ class quizaccess_proctor_observer {
         $auth_payload->username = trim(get_config('quizaccess_proctor', 'proview_admin_username'));
         $auth_payload->password = trim(get_config('quizaccess_proctor', 'proview_admin_password'));
         if (!$quizaccess_proctor_setting_enabled
-            || !$api_base_url
-            || !$auth_payload->username
-            || !$auth_payload->password
             || $event->other['modulename'] != 'quiz') {
+            return;
+        }
+        try {
+            if (!$api_base_url
+                || !$auth_payload->username
+                || !$auth_payload->password) {
+                throw new CustomException("Configurations Missing for triggering callbacks");
+            }
+        } catch (\Throwable $err) {
+            self::capture_error($err);
             return;
         }
         $eventdata = new \stdClass();
