@@ -1,0 +1,15 @@
+{
+    "name": "talview/moodle-quizaccess_proctor",
+    "description": "Plugin to additional configurations to Talview's moodle-local_proview plugin",
+    "type": "moodle-quizaccess",
+    "require": {
+        "sentry/sdk": "^3.5",
+        "composer/installers": "~1.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true,
+            "composer/installers": true
+        }
+    }
+}

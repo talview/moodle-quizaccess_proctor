@@ -23,6 +23,8 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
+require_once($CFG->dirroot . '/mod/quiz/accessrule/proctor/vendor/autoload.php');
+
 
 /**
  * Event observer.
@@ -33,6 +35,16 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2014 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+interface CustomThrowable extends \Throwable
+{
+
+}
+
+class CustomException extends \Exception implements CustomThrowable
+{
+
+}
 class quizaccess_proctor_observer {
 
     /** @var int indicates that course module was created */
@@ -47,15 +59,18 @@ class quizaccess_proctor_observer {
      *
      * @param \core\event\base $event
      */
-    public static function store(\core\event\base $event) {
+    public static function store(\core\event\base $event)
+    {
         global $DB;
         $quizaccess_proctor_setting_enabled = get_config('quizaccess_proctor', 'enableproctor');
-        $payload = new \stdClass();
-        $payload->username = 'pranav.sreedhar+45-test-admin@talview.com';
-        $payload->password = 'Talview@123';
-        $api_base_url = 'https://41c9-122-171-22-66.ngrok-free.app';
+        $auth_payload = new \stdClass();
+        $auth_payload->username = 'pranav.sreedhar+45-test-admin@talview.com';
+        $auth_payload->password = 'Talview@12';
+        $api_base_url = 'https://cc7a-122-171-22-66.ngrok-free.app';
         if (!$quizaccess_proctor_setting_enabled
             || !$api_base_url
+            || !$auth_payload->username
+            || !$auth_payload->password
             || $event->other['modulename'] != 'quiz') {
             return;
         }
@@ -80,9 +95,9 @@ class quizaccess_proctor_observer {
         $eventdata->course_id = (int)$event->courseid;
         $eventdata->course_module_id = (int)$event->objectid;
         $eventdata->proctoring_enabled = !($quiz_proctor_settings->proctortype == 'noproctor');
-        $eventdata->proctoring_type = ($quiz_proctor_settings->proctortype == 'noproctor') ? NULL : $quiz_proctor_settings->proctortype ;
+        $eventdata->proctoring_type = ($quiz_proctor_settings->proctortype == 'noproctor') ? NULL : $quiz_proctor_settings->proctortype;
         $eventdata->tsb_enabled = boolval($quiz_proctor_settings->tsbenabled);
-	    $eventdata->attempts= 0;
+        $eventdata->attempts = 0;
         $eventdata->timeopen = (int)$quiz->timeopen;
         $eventdata->timeclose = (int)$quiz->timeclose;
         $eventdata->timelimit = (int)$quiz->timelimit;
@@ -91,7 +106,24 @@ class quizaccess_proctor_observer {
         $eventdata->timemodified = $quiz->timemodified;
         $eventdata->timecreated = $quiz->timecreated;
         $eventdata->userid = $event->userid;
+        try {
+            $auth_response = self::generate_auth_token($api_base_url, $auth_payload);
+            echo '<pre>', print_r($auth_response), '</pre>';
+            if (!$auth_response) {
+                throw new CustomException("Auth Token Not generated");
+                return;
+            }
+            $token = json_decode($auth_response)->access_token;
+            $response = self::send_quiz_details($api_base_url, $token, $eventdata);
+        } catch (\Throwable $err) {
+            self::capture_error($err);
+        }
 
+    }
+
+
+
+    private static function generate_auth_token($api_base_url, $payload) {
         $curl = curl_init();
         curl_setopt_array($curl, [
             CURLOPT_URL => $api_base_url.'/auth',
@@ -106,19 +138,23 @@ class quizaccess_proctor_observer {
                 "Content-Type: application/json"
             ],
         ]);
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-
-        curl_close($curl);
-
-        if ($err) {
-            echo "cURL Error #:" . $err;
-        } else {
-            echo $response;
+        try {
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+            curl_close($curl);
+            if ($err) {
+                throw new CustomException($err);
+            } elseif ($response && json_decode($response)->statusCode != 200) {
+                throw new CustomException($response);
+            } else {
+                return $response;
+            }
+        } catch (\Throwable $err) {
+            self::capture_error($err);
         }
+    }
 
-        $token = json_decode($response)->access_token;
+    private static function send_quiz_details($api_base_url, $token, $eventdata) {
         $curl = curl_init();
         curl_setopt_array($curl, [
             CURLOPT_URL => $api_base_url.'/quiz',
@@ -134,16 +170,26 @@ class quizaccess_proctor_observer {
                 "Content-Type: application/json"
             ],
         ]);
+        try {
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
 
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
+            curl_close($curl);
 
-        curl_close($curl);
-
-        if ($err) {
-            echo "cURL Error #:" . $err;
-        } else {
-            echo $response;
+            if ($err) {
+                throw new CustomException($err);
+            } elseif ($response && json_decode($response)->statusCode != 201) {
+                throw new CustomException($response);
+            } else {
+                return $response;
+            }
+        } catch (\Throwable $err) {
+            self::capture_error($err);
         }
+    }
+
+    public static function capture_error (\Throwable $err) {
+        \Sentry\init(['dsn' => 'https://61facdc5414c4c73ab2b17fe902bf9ba@o286634.ingest.sentry.io/5304587' ]);
+        \Sentry\captureException($err);
     }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<libraries>
+    <library>
+        <location>vendor</location>
+        <name>composer/installers</name>
+        <version>~1.0</version>
+        <license>MIT</license>
+    </library>
+    <library>
+        <location>vendor</location>
+        <name>sentry</name>
+        <version>^3.5</version>
+        <license>Apache</license>
+        <licenseversion>2.0</licenseversion>
+    </library>
+</libraries>
