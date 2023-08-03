@@ -39,6 +39,26 @@ if ($hassiteconfig) {
         get_string('setting:enableproctor_desc', 'quizaccess_proctor'),
         '1'));
 
+    $name = 'quizaccess_proctor/proview_callback_url';
+    $title = get_string('setting:proview_callback_url_desc', 'quizaccess_proctor');
+    $description = get_string('setting:proview_callback_url_desc', 'quizaccess_proctor');
+    $default = '';
+    $setting = new admin_setting_configtext($name, $title, $description, $default);
+    $settings->add($setting);
+
+    $name = 'quizaccess_proctor/proview_admin_username';
+    $title = get_string('setting:proview_admin_username', 'quizaccess_proctor');
+    $description = get_string('setting:proview_admin_username_desc', 'quizaccess_proctor');
+    $default = '';
+    $setting = new admin_setting_configtext($name, $title, $description, $default);
+    $settings->add($setting);
+
+    $name = 'quizaccess_proctor/proview_admin_password';
+    $title = get_string('setting:proview_admin_password', 'quizaccess_proctor');
+    $description = get_string('setting:proview_admin_password_desc', 'quizaccess_proctor');
+    $default = '';
+    $setting = new admin_setting_configtext($name, $title, $description, $default);
+    $settings->add($setting);
     
 }
 

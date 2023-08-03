@@ -63,10 +63,10 @@ class quizaccess_proctor_observer {
     {
         global $DB;
         $quizaccess_proctor_setting_enabled = get_config('quizaccess_proctor', 'enableproctor');
+        $api_base_url = trim(get_config('quizaccess_proctor', 'proview_callback_url'));
         $auth_payload = new \stdClass();
-        $auth_payload->username = 'pranav.sreedhar+45-test-admin@talview.com';
-        $auth_payload->password = 'Talview@12';
-        $api_base_url = 'https://cc7a-122-171-22-66.ngrok-free.app';
+        $auth_payload->username = trim(get_config('quizaccess_proctor', 'proview_admin_username'));
+        $auth_payload->password = trim(get_config('quizaccess_proctor', 'proview_admin_password'));
         if (!$quizaccess_proctor_setting_enabled
             || !$api_base_url
             || !$auth_payload->username
@@ -108,7 +108,6 @@ class quizaccess_proctor_observer {
         $eventdata->userid = $event->userid;
         try {
             $auth_response = self::generate_auth_token($api_base_url, $auth_payload);
-            echo '<pre>', print_r($auth_response), '</pre>';
             if (!$auth_response) {
                 throw new CustomException("Auth Token Not generated");
                 return;
@@ -141,10 +140,11 @@ class quizaccess_proctor_observer {
         try {
             $response = curl_exec($curl);
             $err = curl_error($curl);
+            $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
             curl_close($curl);
             if ($err) {
                 throw new CustomException($err);
-            } elseif ($response && json_decode($response)->statusCode != 200) {
+            } elseif ($response && $httpcode != 200) {
                 throw new CustomException($response);
             } else {
                 return $response;
@@ -173,12 +173,11 @@ class quizaccess_proctor_observer {
         try {
             $response = curl_exec($curl);
             $err = curl_error($curl);
-
+            $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
             curl_close($curl);
-
             if ($err) {
                 throw new CustomException($err);
-            } elseif ($response && json_decode($response)->statusCode != 201) {
+            } elseif ($response && $httpcode != 201) {
                 throw new CustomException($response);
             } else {
                 return $response;
