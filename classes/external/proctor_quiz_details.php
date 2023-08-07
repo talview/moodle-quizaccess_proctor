@@ -41,7 +41,7 @@ require_once($CFG->libdir . '/externallib.php');
  * @copyright  Talview, 2023
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class validate_quiz_keys extends external_api {
+class proctor_quiz_details extends external_api {
 
     /**
      * External function parameters.
@@ -50,13 +50,13 @@ class validate_quiz_keys extends external_api {
      */
     public static function execute_parameters(): external_function_parameters {
         return new external_function_parameters([
-           'cmid' => new external_value(PARAM_INT, 'Course module ID',
+            'cmid' => new external_value(PARAM_INT, 'Course module ID',
                 VALUE_REQUIRED, null, NULL_NOT_ALLOWED),
-           'url' => new external_value(PARAM_URL, 'Page URL to check',
+            'url' => new external_value(PARAM_URL, 'Page URL to check',
                 VALUE_REQUIRED, null, NULL_NOT_ALLOWED),
-           'configkey' => new external_value(PARAM_ALPHANUMEXT, 'proctor config key',
+            'configkey' => new external_value(PARAM_ALPHANUMEXT, 'proctor config key',
                 VALUE_DEFAULT, null),
-           'browserexamkey' => new external_value(PARAM_ALPHANUMEXT, 'proctor browser exam key',
+            'browserexamkey' => new external_value(PARAM_ALPHANUMEXT, 'proctor browser exam key',
                 VALUE_DEFAULT, null),
         ]);
     }
@@ -72,10 +72,10 @@ class validate_quiz_keys extends external_api {
      */
     public static function execute(string $cmid, string $url, ?string $configkey = null, ?string $browserexamkey = null): array {
         list(
-                'cmid' => $cmid,
-                'url' => $url,
-                'configkey' => $configkey,
-                'browserexamkey' => $browserexamkey
+            'cmid' => $cmid,
+            'url' => $url,
+            'configkey' => $configkey,
+            'browserexamkey' => $browserexamkey
             ) = self::validate_parameters(self::execute_parameters(), [
             'cmid' => $cmid,
             'url' => $url,
@@ -102,14 +102,14 @@ class validate_quiz_keys extends external_api {
         // Check if there is a valid config key.
         if (!$accessmanager->validate_config_key($configkey, $url)) {
             access_prevented::create_strict($accessmanager, get_string('invalid_config_key', 'quizaccess_proctor'),
-                    $configkey, $browserexamkey)->trigger();
+                $configkey, $browserexamkey)->trigger();
             $result['configkey'] = false;
         }
 
         // Check if there is a valid browser exam key.
         if (!$accessmanager->validate_browser_exam_key($browserexamkey, $url)) {
             access_prevented::create_strict($accessmanager, get_string('invalid_browser_key', 'quizaccess_proctor'),
-                    $configkey, $browserexamkey)->trigger();
+                $configkey, $browserexamkey)->trigger();
             $result['browserexamkey'] = false;
         }
 
@@ -129,7 +129,7 @@ class validate_quiz_keys extends external_api {
     public static function execute_returns(): external_single_structure {
         return new external_single_structure([
             'configkey' => new external_value(PARAM_BOOL, 'Is a provided config key valid?',
-                    VALUE_REQUIRED, 0, NULL_NOT_ALLOWED),
+                VALUE_REQUIRED, 0, NULL_NOT_ALLOWED),
             'browserexamkey' => new external_value(PARAM_BOOL, 'Is a provided browser exam key valid?',
                 VALUE_REQUIRED, 0, NULL_NOT_ALLOWED)
         ]);
@@ -143,13 +143,12 @@ class validate_quiz_keys extends external_api {
      */
     private static function get_quiz_id(string $cmid): int {
         $quizid = 0;
-
         $coursemodule = get_coursemodule_from_id('quiz', $cmid);
         if (!empty($coursemodule)) {
             $quizid = $coursemodule->instance;
         }
-
         return $quizid;
+
     }
 }
 
