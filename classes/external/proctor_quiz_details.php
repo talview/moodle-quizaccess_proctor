@@ -147,7 +147,6 @@ class proctor_quiz_details extends external_api {
         if (!empty($coursemodule)) {
             $quizid = $coursemodule->instance;
         }
-        echo $quizid;
         return $quizid;
 
     }
