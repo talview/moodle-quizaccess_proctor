@@ -24,7 +24,7 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-
+global $CFG;
 require_once($CFG->dirroot  . '/mod/quiz/accessrule/proctor/lib.php');
 
 /**
@@ -32,7 +32,7 @@ require_once($CFG->dirroot  . '/mod/quiz/accessrule/proctor/lib.php');
  */
 function xmldb_quizaccess_proctor_install() {
     global $DB;
-
+    $params = array();
     $total = $DB->count_records('quiz', $params);
     if ($total > 0) {
         $rs = $DB->get_recordset('quiz', $params);
