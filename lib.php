@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
  *
  * @param stdClass $course the course object
  * @param stdClass $cm the course module object
- * @param \context $context the context
+ * @param context $context the context
  * @param string $filearea the name of the file area
  * @param array $args extra arguments (itemid, path)
  * @param bool $forcedownload whether or not force download
