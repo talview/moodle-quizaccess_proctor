@@ -48,6 +48,6 @@ $string['setting:proview_admin_username'] = 'Proview Admin Username';
 $string['setting:proview_admin_username_desc'] = 'Username provided by Talview to authenticate callbacks';
 $string['setting:proview_admin_password'] = 'Proview Admin Password';
 $string['setting:proview_admin_password_desc'] = 'Password provided by Talview to authenticate callbacks';
-$string['external_link'] = 'External Link';
-$string['external_link_help'] = 'Kindly provide the external links in the form url:caption for example, www.google.com : GOOGLE. Separate every pair of url:caption with newline';
+$string['reference_link'] = 'Reference Link';
+$string['reference_link_help'] = 'Kindly provide the reference links in the form url:caption for example, www.google.com : GOOGLE. Separate every pair of url:caption with newline';
 

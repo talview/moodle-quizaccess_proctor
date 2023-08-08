@@ -161,15 +161,15 @@ class settings_provider {
 
         self::insert_element($quizform, $mform, $element1);
 
-        $external_link_element=$mform->createElement(
+        $reference_link_element=$mform->createElement(
             'textarea',
-            'external_link',
-            get_string('external_link','quizaccess_proctor')
+            'reference_link',
+            get_string('reference_link','quizaccess_proctor')
         );
-        self::insert_element($quizform,$mform,$external_link_element);
-        self::set_type($quizform, $mform, 'external_link', PARAM_RAW);
-        self::set_default($quizform, $mform, 'external_link', '');
-        self::add_help_button($quizform, $mform, 'external_link');
+        self::insert_element($quizform,$mform,$reference_link_element);
+        self::set_type($quizform, $mform, 'reference_link', PARAM_RAW);
+        self::set_default($quizform, $mform, 'reference_link', '');
+        self::add_help_button($quizform, $mform, 'reference_link');
     }
 
      /**
