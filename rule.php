@@ -148,6 +148,7 @@ class quizaccess_proctor extends quiz_access_rule_base {
             $settings->proctortype = $quizsettings->get('proctortype');
             $settings->instructions = $quizsettings->get('instructions');
             $settings->tsbenabled = $quizsettings->get('tsbenabled');
+            $settings->reference_link = $quizsettings->get('reference_link');
         }
         if (empty($quizsettings)) {
             $quizsettings = new quiz_settings(0, $settings);
@@ -166,8 +167,8 @@ class quizaccess_proctor extends quiz_access_rule_base {
             $proctordata->instructions = $quiz->instructions;
             $proctordata->tsbenabled = (isset($quiz->tsbenabled) && $quiz->tsbenabled) ? 1 : 0;
             $proctordata->usermodified = $USER->id;
-
-            if($proctor = $DB->get_record('quizaccess_proctor', array('quizid'=> $quiz->id))) { 
+            $proctordata->reference_link = $quiz->reference_link;
+            if($proctor = $DB->get_record('quizaccess_proctor', array('quizid'=> $quiz->id))) {
                 $proctordata->id = $proctor->id;
                 $proctordata->timemodified = time();
                 $DB->update_record('quizaccess_proctor', $proctordata);
