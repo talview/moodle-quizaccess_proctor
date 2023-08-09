@@ -156,10 +156,12 @@ class settings_provider {
         $element1 = $mform->createElement(
             'textarea',
             'instructions',
-            get_string('instructions', 'quizaccess_proctor'))
-        ;
-            
+            get_string('instructions', 'quizaccess_proctor'),
+            ['style' => 'width: 100%;']
+        );
         self::insert_element($quizform, $mform, $element1);
+        self::set_type($quizform, $mform, 'instruction', PARAM_TEXT);
+        self::set_default($quizform, $mform, 'instruction', '');
 
         $element2 = $mform->createElement(
             'checkbox',

@@ -103,6 +103,7 @@ class quizaccess_proctor_observer {
         $eventdata->course_module_id = (int)$event->objectid;
         $eventdata->proctoring_enabled = !($quiz_proctor_settings->proctortype == 'noproctor');
         $eventdata->proctoring_type = ($quiz_proctor_settings->proctortype == 'noproctor') ? NULL : $quiz_proctor_settings->proctortype;
+        $eventdata->instructions = $quiz_proctor_settings->instructions;
         $eventdata->tsb_enabled = boolval($quiz_proctor_settings->tsbenabled);
         $eventdata->attempts = 0;
         $eventdata->timeopen = (int)$quiz->timeopen;
