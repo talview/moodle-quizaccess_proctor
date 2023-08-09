@@ -104,6 +104,7 @@ class quizaccess_proctor_observer {
         $eventdata->proctoring_enabled = !($quiz_proctor_settings->proctortype == 'noproctor');
         $eventdata->proctoring_type = ($quiz_proctor_settings->proctortype == 'noproctor') ? NULL : $quiz_proctor_settings->proctortype;
         $eventdata->tsb_enabled = boolval($quiz_proctor_settings->tsbenabled);
+        $eventdata->reference_link = $quiz_proctor_settings->reference_link;
         $eventdata->attempts = 0;
         $eventdata->timeopen = (int)$quiz->timeopen;
         $eventdata->timeclose = (int)$quiz->timeclose;

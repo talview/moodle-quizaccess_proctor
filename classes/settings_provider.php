@@ -167,7 +167,7 @@ class settings_provider {
             get_string('reference_link','quizaccess_proctor')
         );
         self::insert_element($quizform,$mform,$reference_link_element);
-        self::set_type($quizform, $mform, 'reference_link', PARAM_RAW);
+        self::set_type($quizform, $mform, 'reference_link', PARAM_TEXT);
         self::set_default($quizform, $mform, 'reference_link', '');
         self::add_help_button($quizform, $mform, 'reference_link');
     }

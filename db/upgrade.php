@@ -39,23 +39,22 @@ function xmldb_quizaccess_proctor_upgrade($oldversion) {
 
     // Automatically generated Moodle v3.9.0 release upgrade line.
     // Put any upgrade step following this.
-    if ($oldversion < 2023080101) {
-
-        // Changing the default of field tsbenabled on table quizaccess_proctor to 0.
-        $table = new xmldb_table('quizaccess_proctor');
-        $field = new xmldb_field('tsbenabled', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0', 'proctortype');
-
-        // Launch change of default for field tsbenabled.
-        $dbman->change_field_default($table, $field);
-
-        // Proctor savepoint reached.
-        upgrade_plugin_savepoint(true, 2023080101, 'quizaccess', 'proctor');
-    }
-    if ($oldversion < 2023080806) {
-
+//    if ($oldversion < 2023080809) {
+//
+//        // Changing the default of field tsbenabled on table quizaccess_proctor to 0.
+//        $table = new xmldb_table('quizaccess_proctor');
+//        $field = new xmldb_field('tsbenabled', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0', 'proctortype');
+//
+//        // Launch change of default for field tsbenabled.
+//        $dbman->change_field_default($table, $field);
+//
+//        // Proctor savepoint reached.
+//        upgrade_plugin_savepoint(true, 2023080809, 'quizaccess', 'proctor');
+//    }
+    if ($oldversion < 2023080909) {
         // Define field reference_link to be added to quizaccess_proctor.
         $table = new xmldb_table('quizaccess_proctor');
-        $field = new xmldb_field('reference_link', XMLDB_TYPE_TEXT, null, null, XMLDB_NULLABLE, null, null, 'tsbenabled');
+        $field = new xmldb_field('reference_link', XMLDB_TYPE_TEXT, null, null, null, null, null, 'timemodified');
 
         // Conditionally launch add field reference_link.
         if (!$dbman->field_exists($table, $field)) {
@@ -63,7 +62,7 @@ function xmldb_quizaccess_proctor_upgrade($oldversion) {
         }
 
         // Proctor savepoint reached.
-        upgrade_plugin_savepoint(true, 2023080806, 'quizaccess', 'proctor');
+        upgrade_plugin_savepoint(true, 2023080909, 'quizaccess', 'proctor');
     }
 
 
