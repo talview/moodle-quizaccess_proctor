@@ -53,6 +53,7 @@ function xmldb_quizaccess_proctor_install() {
                 $proctorsettings->usermodified = get_admin()->id;
                 $proctorsettings->timecreated = time();
                 $proctorsettings->timemodified = time();
+                $proctorsettings->reference_link = '';
 
                 $DB->insert_record('quizaccess_proctor', $proctorsettings);
 

@@ -72,6 +72,10 @@ class quiz_settings extends persistent {
                 'type' => PARAM_INT,
                 'default' => 0,
             ],
+            'reference_link' => [
+                'type' => PARAM_TEXT,
+                'default' => '',
+            ],
             
         ];
     }
@@ -85,7 +89,6 @@ class quiz_settings extends persistent {
      * @return false|\quizaccess_proctor\quiz_settings
      */
     public static function get_by_quiz_id(int $quizid) {
-        
         return self::get_record(['quizid' => $quizid]);
     }
 

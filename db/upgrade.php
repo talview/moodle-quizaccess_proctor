@@ -51,6 +51,21 @@ function xmldb_quizaccess_proctor_upgrade($oldversion) {
         // Proctor savepoint reached.
         upgrade_plugin_savepoint(true, 2023080101, 'quizaccess', 'proctor');
     }
+    if ($oldversion < 2023080809) {
+        // Define field reference_link to be added to quizaccess_proctor.
+        $table = new xmldb_table('quizaccess_proctor');
+        $field = new xmldb_field('reference_link', XMLDB_TYPE_TEXT, null, null, null, null, null, 'timemodified');
+
+        // Conditionally launch add field reference_link.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Proctor savepoint reached.
+        upgrade_plugin_savepoint(true, 2023080809, 'quizaccess', 'proctor');
+    }
+
+
 
     // Automatically generated Moodle v4.0.0 release upgrade line.
     // Put any upgrade step following this.
