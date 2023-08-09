@@ -154,13 +154,19 @@ class settings_provider {
         self::add_help_button($quizform, $mform, 'proctortype');
 
         $element1 = $mform->createElement(
+            'textarea',
+            'instructions',
+            get_string('instructions', 'quizaccess_proctor'))
+        ;
+            
+        self::insert_element($quizform, $mform, $element1);
+
+        $element2 = $mform->createElement(
             'checkbox',
             'tsbenabled',
             get_string('tsbenable', 'quizaccess_proctor'))
         ;
-
-        self::insert_element($quizform, $mform, $element1);
-
+        self::insert_element($quizform, $mform, $element2);
     }
 
      /**

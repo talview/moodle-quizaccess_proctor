@@ -39,17 +39,19 @@ function xmldb_quizaccess_proctor_upgrade($oldversion) {
 
     // Automatically generated Moodle v3.9.0 release upgrade line.
     // Put any upgrade step following this.
-    if ($oldversion < 2023080101) {
+    if ($oldversion < 2023080702) {
 
-        // Changing the default of field tsbenabled on table quizaccess_proctor to 0.
+        // Adding instructions field on table quizaccess_proctor
         $table = new xmldb_table('quizaccess_proctor');
-        $field = new xmldb_field('tsbenabled', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0', 'proctortype');
+        $field = new xmldb_field('instructions', XMLDB_TYPE_TEXT, null, null, null, null, null, 'timemodified');
 
-        // Launch change of default for field tsbenabled.
-        $dbman->change_field_default($table, $field);
+        // Conditionally launch add field instructions.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
 
         // Proctor savepoint reached.
-        upgrade_plugin_savepoint(true, 2023080101, 'quizaccess', 'proctor');
+        upgrade_plugin_savepoint(true, 2023080702, 'quizaccess', 'proctor');
     }
 
     // Automatically generated Moodle v4.0.0 release upgrade line.

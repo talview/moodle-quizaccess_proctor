@@ -37,6 +37,7 @@ $string['noproctor'] = 'No Proctoring';
 $string['aiproctor'] = 'AI Proctoring';
 $string['recordandreview'] = 'Record and Review Proctoring';
 $string['liveproctor'] = 'Live Proctoring';
+$string['instructions'] = 'Instructions';
 $string['pluginname'] = 'Proctoring Settings';
 $string['invalidproctor'] = 'Invalid Proctoring';
 $string['setting:supportedversions'] = 'Supported from Moodle 3.9';
