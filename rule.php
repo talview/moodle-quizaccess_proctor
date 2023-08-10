@@ -219,7 +219,8 @@ class quizaccess_proctor extends quiz_access_rule_base {
         return [
                 'proctor.proctortype AS proctortype, '
                 . 'proctor.tsbenabled AS tsbenabled, '
-                . 'proctor.instructions AS instructions '
+                . 'proctor.instructions AS instructions, '
+                . 'proctor.reference_link AS reference_link '
                 , 'LEFT JOIN {quizaccess_proctor} proctor ON proctor.quizid = quiz.id '
                 , []
         ];

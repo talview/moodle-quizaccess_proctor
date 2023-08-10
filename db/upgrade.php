@@ -70,7 +70,7 @@ function xmldb_quizaccess_proctor_upgrade($oldversion) {
     if ($oldversion < 2023081001) {
         // Define field reference_link to be added to quizaccess_proctor.
         $table = new xmldb_table('quizaccess_proctor');
-        $field = new xmldb_field('instructions', XMLDB_TYPE_TEXT, null, null, null, null, null, 'timemodified');
+        $field = new xmldb_field('instructions', XMLDB_TYPE_TEXT, null, null, null, null, null, 'reference_link');
 
         // Conditionally launch add field reference_link.
         if (!$dbman->field_exists($table, $field)) {

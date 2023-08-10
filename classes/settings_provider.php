@@ -133,6 +133,16 @@ class settings_provider {
         self::insert_element($quizform, $mform, $element);
 
     }
+    public static function validate_reference_links($value) {
+        $lines = preg_split('/\r\n|\r|\n/', $value);
+        foreach ($lines as $line) {
+            if (!preg_match('~^((https?://)?([a-z0-9-]+\.)*[a-z0-9-]+\.[a-z]{2,}(?:/[^/]*)*):(.+)$~i', $line)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     /**
      * Add proctor usage element with all available options.
@@ -175,6 +185,8 @@ class settings_provider {
         self::set_type($quizform, $mform, 'reference_link', PARAM_TEXT);
         self::set_default($quizform, $mform, 'reference_link', '');
         self::add_help_button($quizform, $mform, 'reference_link');
+        $mform->addRule('reference_link', get_string('invalid_reference_links', 'quizaccess_proctor'), 'callback', 'quizaccess_proctor\settings_provider::validate_reference_links');
+
 
         $tsb_enable_element = $mform->createElement(
             'checkbox',
