@@ -40,7 +40,7 @@ function xmldb_quizaccess_proctor_upgrade($oldversion) {
     // Automatically generated Moodle v3.9.0 release upgrade line.
     // Put any upgrade step following this.
 
-    if ($oldversion < 2023080101) {
+    if ($oldversion < 2023081001) {
 
         // Changing the default of field tsbenabled on table quizaccess_proctor to 0.
         $table = new xmldb_table('quizaccess_proctor');
@@ -50,10 +50,10 @@ function xmldb_quizaccess_proctor_upgrade($oldversion) {
         $dbman->change_field_default($table, $field);
 
         // Proctor savepoint reached.
-        upgrade_plugin_savepoint(true, 2023080101, 'quizaccess', 'proctor');
+        upgrade_plugin_savepoint(true, 2023081001, 'quizaccess', 'proctor');
     }
 
-    if ($oldversion < 2023080809) {
+    if ($oldversion < 2023081001) {
         // Define field reference_link to be added to quizaccess_proctor.
         $table = new xmldb_table('quizaccess_proctor');
         $field = new xmldb_field('reference_link', XMLDB_TYPE_TEXT, null, null, null, null, null, 'timemodified');
@@ -64,10 +64,10 @@ function xmldb_quizaccess_proctor_upgrade($oldversion) {
         }
 
         // Proctor savepoint reached.
-        upgrade_plugin_savepoint(true, 2023080809, 'quizaccess', 'proctor');
+        upgrade_plugin_savepoint(true, 2023081001, 'quizaccess', 'proctor');
     }
 
-    if ($oldversion < 2023080809) {
+    if ($oldversion < 2023081001) {
         // Define field reference_link to be added to quizaccess_proctor.
         $table = new xmldb_table('quizaccess_proctor');
         $field = new xmldb_field('instructions', XMLDB_TYPE_TEXT, null, null, null, null, null, 'timemodified');
@@ -78,7 +78,7 @@ function xmldb_quizaccess_proctor_upgrade($oldversion) {
         }
 
         // Proctor savepoint reached.
-        upgrade_plugin_savepoint(true, 2023080809, 'quizaccess', 'proctor');
+        upgrade_plugin_savepoint(true, 2023081001, 'quizaccess', 'proctor');
     }
     // Automatically generated Moodle v4.0.0 release upgrade line.
     // Put any upgrade step following this.
