@@ -37,6 +37,7 @@ $string['noproctor'] = 'No Proctoring';
 $string['aiproctor'] = 'AI Proctoring';
 $string['recordandreview'] = 'Record and Review Proctoring';
 $string['liveproctor'] = 'Live Proctoring';
+$string['instructions'] = 'Instructions';
 $string['pluginname'] = 'Proctoring Settings';
 $string['invalidproctor'] = 'Invalid Proctoring';
 $string['setting:supportedversions'] = 'Supported from Moodle 3.9';
@@ -50,4 +51,3 @@ $string['setting:proview_admin_password'] = 'Proview Admin Password';
 $string['setting:proview_admin_password_desc'] = 'Password provided by Talview to authenticate callbacks';
 $string['reference_link'] = 'Reference Link';
 $string['reference_link_help'] = 'Kindly provide the reference links in the form url:caption for example, www.google.com : GOOGLE. Separate every pair of url:caption with newline';
-

@@ -141,35 +141,47 @@ class settings_provider {
      * @param \MoodleQuickForm $mform the wrapped MoodleQuickForm.
      */
     protected static function add_proctor_usage_options(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform) {
-        $element = $mform->createElement(
+        $proctor_type_element = $mform->createElement(
             'select',
             'proctortype',
             get_string('selectproctor', 'quizaccess_proctor'),
             self::get_proctor_options($quizform->get_context())
         );
 
-        self::insert_element($quizform, $mform, $element);
+        self::insert_element($quizform, $mform, $proctor_type_element);
         self::set_type($quizform, $mform, 'proctortype', PARAM_RAW);
         self::set_default($quizform, $mform, 'proctortype', 'noproctor');
         self::add_help_button($quizform, $mform, 'proctortype');
 
-        $element1 = $mform->createElement(
-            'checkbox',
-            'tsbenabled',
-            get_string('tsbenable', 'quizaccess_proctor'))
-        ;
+        $instructions_element = $mform->createElement(
+            'textarea',
+            'instructions',
+            get_string('instructions', 'quizaccess_proctor'),
+            ['style' => 'width: 100%;']
+        );
 
-        self::insert_element($quizform, $mform, $element1);
+        self::insert_element($quizform, $mform, $instructions_element);
+        self::set_type($quizform, $mform, 'instructions', PARAM_TEXT);
+        self::set_default($quizform, $mform, 'instructions', '');
 
         $reference_link_element=$mform->createElement(
             'textarea',
             'reference_link',
-            get_string('reference_link','quizaccess_proctor')
+            get_string('reference_link','quizaccess_proctor'),
+            ['style' => 'width: 100%;']
         );
+
         self::insert_element($quizform,$mform,$reference_link_element);
         self::set_type($quizform, $mform, 'reference_link', PARAM_TEXT);
         self::set_default($quizform, $mform, 'reference_link', '');
         self::add_help_button($quizform, $mform, 'reference_link');
+
+        $tsb_enable_element = $mform->createElement(
+            'checkbox',
+            'tsbenabled',
+            get_string('tsbenable', 'quizaccess_proctor'))
+        ;
+        self::insert_element($quizform, $mform, $tsb_enable_element);
     }
 
      /**

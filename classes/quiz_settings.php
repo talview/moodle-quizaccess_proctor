@@ -76,6 +76,10 @@ class quiz_settings extends persistent {
                 'type' => PARAM_TEXT,
                 'default' => '',
             ],
+            'instructions' => [
+                'type' => PARAM_TEXT,
+                'default' => '',
+            ],
             
         ];
     }
