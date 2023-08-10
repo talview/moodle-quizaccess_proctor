@@ -218,7 +218,8 @@ class quizaccess_proctor extends quiz_access_rule_base {
     public static function get_settings_sql($quizid) : array {
         return [
                 'proctor.proctortype AS proctortype, '
-                . 'proctor.tsbenabled AS tsbenabled '
+                . 'proctor.tsbenabled AS tsbenabled, '
+                . 'proctor.instructions AS instructions '
                 , 'LEFT JOIN {quizaccess_proctor} proctor ON proctor.quizid = quiz.id '
                 , []
         ];
