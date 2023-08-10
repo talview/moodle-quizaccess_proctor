@@ -146,6 +146,7 @@ class quizaccess_proctor extends quiz_access_rule_base {
         $quizsettings = quiz_settings::get_by_quiz_id($quiz->id);
         if ($quizsettings) {
             $settings->proctortype = $quizsettings->get('proctortype');
+            $settings->instructions = $quizsettings->get('instructions');
             $settings->tsbenabled = $quizsettings->get('tsbenabled');
             $settings->reference_link = $quizsettings->get('reference_link');
         }
@@ -163,6 +164,7 @@ class quizaccess_proctor extends quiz_access_rule_base {
             $proctordata->quizid = $quiz->id;
             $proctordata->cmid = $cm->id;
             $proctordata->proctortype = $quiz->proctortype;
+            $proctordata->instructions = $quiz->instructions;
             $proctordata->tsbenabled = (isset($quiz->tsbenabled) && $quiz->tsbenabled) ? 1 : 0;
             $proctordata->usermodified = $USER->id;
             $proctordata->reference_link = $quiz->reference_link;
@@ -217,6 +219,7 @@ class quizaccess_proctor extends quiz_access_rule_base {
         return [
                 'proctor.proctortype AS proctortype, '
                 . 'proctor.tsbenabled AS tsbenabled, '
+                . 'proctor.instructions AS instructions, '
                 . 'proctor.reference_link AS reference_link '
                 , 'LEFT JOIN {quizaccess_proctor} proctor ON proctor.quizid = quiz.id '
                 , []

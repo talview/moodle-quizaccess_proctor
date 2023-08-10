@@ -51,3 +51,4 @@ $string['setting:proview_admin_password_desc'] = 'Password provided by Talview t
 $string['reference_link'] = 'Reference Link';
 $string['reference_link_help'] = 'Kindly provide the reference links in the form url:caption for example, www.google.com : GOOGLE. Separate every pair of url:caption with newline';
 $string['invalid_reference_links'] = 'Please enter valid reference links in the format URL:Caption, one per line.';
+$string['instructions'] = 'Instructions';
