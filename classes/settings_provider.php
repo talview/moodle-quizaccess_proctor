@@ -134,12 +134,24 @@ class settings_provider {
 
     }
 
+    public static function validate_reference_links($value) {
+        $lines = preg_split('/\r\n|\r|\n/', $value);
+        foreach ($lines as $line) {
+            if (!preg_match('/^([^:]+):([^:]+)$/i', $line)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * Add proctor usage element with all available options.
      *
      * @param \mod_quiz_mod_form $quizform the quiz settings form that is being built.
      * @param \MoodleQuickForm $mform the wrapped MoodleQuickForm.
      */
+
     protected static function add_proctor_usage_options(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform) {
         $element = $mform->createElement(
             'select',
@@ -170,6 +182,7 @@ class settings_provider {
         self::set_type($quizform, $mform, 'reference_link', PARAM_TEXT);
         self::set_default($quizform, $mform, 'reference_link', '');
         self::add_help_button($quizform, $mform, 'reference_link');
+        $mform->addRule('reference_link', get_string('invalid_reference_links', 'quizaccess_proctor'), 'callback', 'quizaccess_proctor\settings_provider::validate_reference_links');
     }
 
      /**
@@ -185,8 +198,6 @@ class settings_provider {
        // }
     }
 
-
-    
     /**
      * Hide proctor elements if required.
      *
