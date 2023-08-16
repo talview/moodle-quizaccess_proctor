@@ -219,7 +219,8 @@ class quizaccess_proctor extends quiz_access_rule_base {
         return [
             'proctor.proctortype AS proctortype, '
             . 'proctor.tsbenabled AS tsbenabled, '
-            . 'proctor.instructions AS instructions '
+            . 'proctor.instructions AS instructions,'
+            . 'proctor.reference_link AS reference_link '
             , 'LEFT JOIN {quizaccess_proctor} proctor ON proctor.quizid = quiz.id '
             , []
         ];
@@ -237,9 +238,9 @@ class quizaccess_proctor extends quiz_access_rule_base {
         $page->set_title($this->quizobj->get_course()->shortname . ': ' . $page->title);
         $page->set_heading($page->title);
         $proctortype=$this->quizobj->get_quiz()->proctortype;
-        $enabled = get_config('local_proview', 'enabled');
+        $local_proview_enabled = get_config('local_proview', 'enabled');
         $quizaccess_proctor_setting_enabled = get_config('quizaccess_proctor', 'enableproctor');
-        if ( $enabled && $quizaccess_proctor_setting_enabled && $proctortype !== 'noproctor'){
+        if ( $local_proview_enabled && $quizaccess_proctor_setting_enabled && $proctortype !== 'noproctor'){
             $page->set_pagelayout('secure');
             $page->set_popup_notification_allowed(false); // Prevent message notifications.
         }
