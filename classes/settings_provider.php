@@ -134,6 +134,9 @@ class settings_provider {
 
     }
     public static function validate_reference_links($value) {
+        if (empty($value)) {
+            return true;
+        }
         $lines = preg_split('/\r\n|\r|\n/', $value);
         foreach ($lines as $line) {
             if (!preg_match('~^((https?://)?([a-z0-9-]+\.)*[a-z0-9-]+\.[a-z]{2,}(?:/[^/]*)*):(.+)$~i', $line)) {

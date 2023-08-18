@@ -53,7 +53,7 @@ function xmldb_quizaccess_proctor_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023080101, 'quizaccess', 'proctor');
     }
 
-    if ($oldversion < 2023080809) {
+    if ($oldversion < 2023081801) {
         // Define field reference_link to be added to quizaccess_proctor.
         $table = new xmldb_table('quizaccess_proctor');
         $field = new xmldb_field('reference_link', XMLDB_TYPE_TEXT, null, null, null, null, null, 'timemodified');
@@ -62,9 +62,16 @@ function xmldb_quizaccess_proctor_upgrade($oldversion) {
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
+        if ($dbman->field_exists($table, $field)) {
+            $records = $DB->get_records('quizaccess_proctor');
+            foreach ($records as $record) {
+                $record->reference_link = '';
+                $DB->update_record('quizaccess_proctor', $record);
+            }
+        }
 
         // Proctor savepoint reached.
-        upgrade_plugin_savepoint(true, 2023080809, 'quizaccess', 'proctor');
+        upgrade_plugin_savepoint(true, 2023081801, 'quizaccess', 'proctor');
     }
 
     if ($oldversion < 2023081001) {
