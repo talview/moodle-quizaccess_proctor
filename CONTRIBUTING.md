@@ -1,6 +1,6 @@
-# Contributing to Talview Proview Moodle (Quizaccess-Proctor) Plugin
+# Contributing to Proview - Moodle (Quizaccess-Proctor) Plugin
 
-Welcome to the Talview Proview Moodle (quizaccess_proctor) Plugin project! We appreciate your interest in contributing.
+Welcome to the Proview - Moodle (quizaccess_proctor) Plugin project! We appreciate your interest in contributing.
 This document
 outlines the guidelines for contributing to this project. By participating, you agree to follow these guidelines and
 contribute in a positive and respectful manner.
@@ -21,9 +21,9 @@ contribute in a positive and respectful manner.
 
 ## How Can You Contribute?
 
-You can contribute to the Talview Proview Moodle Plugin in the following ways:
+You can contribute to the Proview - Moodle Plugin in the following ways:
 
-- Reporting issues or bugs
+- Reporting issues or bugs on the [Issue tracker](https://github.com/talview/moodle-quizaccess_proctor/issues)
 - Suggesting new features or enhancements
 - Improving documentation
 - Writing code improvements or fixes
@@ -33,7 +33,7 @@ You can contribute to the Talview Proview Moodle Plugin in the following ways:
 
 ### Fork the Repository
 
-Fork the Talview Proview Moodle Plugin repository to your GitHub account by clicking the "Fork" button at the top of the
+Fork the Plugin repository to your GitHub account by clicking the "Fork" button at the top of the
 repository page.
 
 ### Clone Your Fork
