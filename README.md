@@ -1,4 +1,4 @@
-# Introduciton | `moodle-quizaccess_proctor` -
+# Introduciton | `moodle-quizaccess_proctor`
 
 ---
 
