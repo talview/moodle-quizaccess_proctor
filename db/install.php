@@ -49,10 +49,12 @@ function xmldb_quizaccess_proctor_install() {
                 $proctorsettings->quizid = $quiz->id;
                 $proctorsettings->cmid = $cm->id;
                 $proctorsettings->proctortype = 'noproctor';
+                $proctorsettings->instructions = '';
                 $proctorsettings->tsbenabled = 0;
                 $proctorsettings->usermodified = get_admin()->id;
                 $proctorsettings->timecreated = time();
                 $proctorsettings->timemodified = time();
+                $proctorsettings->reference_link = '';
 
                 $DB->insert_record('quizaccess_proctor', $proctorsettings);
 

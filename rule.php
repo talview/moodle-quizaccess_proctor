@@ -68,7 +68,7 @@ class quizaccess_proctor extends quiz_access_rule_base {
      */
     public static function make (quiz $quizobj, $timenow, $canignoretimelimits) {
         $accessmanager = new access_manager($quizobj);
-        
+
         return new self($quizobj, $timenow, $accessmanager);
     }
 
@@ -115,7 +115,7 @@ class quizaccess_proctor extends quiz_access_rule_base {
             $errors[$name] = $error->out();
         }
 
-       // Edge case to force user to select a proctor.
+        // Edge case to force user to select a proctor.
         if ($quizsettings->get('proctortype') == '') {
             if (empty($data['proctortype'])) {
                 $errors['proctortype'] = get_string('invalidproctor', 'quizaccess_proctor');
@@ -141,12 +141,14 @@ class quizaccess_proctor extends quiz_access_rule_base {
         $settings = settings_provider::filter_plugin_settings($quiz);
         $settings->quizid = $quiz->id;
         $settings->cmid = $cm->id;
-       
+
         // Get existing settings or create new settings if none exist.
         $quizsettings = quiz_settings::get_by_quiz_id($quiz->id);
         if ($quizsettings) {
             $settings->proctortype = $quizsettings->get('proctortype');
+            $settings->instructions = $quizsettings->get('instructions');
             $settings->tsbenabled = $quizsettings->get('tsbenabled');
+            $settings->reference_link = $quizsettings->get('reference_link');
         }
         if (empty($quizsettings)) {
             $quizsettings = new quiz_settings(0, $settings);
@@ -155,25 +157,26 @@ class quizaccess_proctor extends quiz_access_rule_base {
             $quizsettings->from_record($settings);
         }
 
-       // Save the data
-        if ($quiz->proctortype != '') { 
+        // Save the data
+        if ($quiz->proctortype != '') {
             $proctordata = new stdClass();
 
             $proctordata->quizid = $quiz->id;
             $proctordata->cmid = $cm->id;
             $proctordata->proctortype = $quiz->proctortype;
+            $proctordata->instructions = $quiz->instructions;
             $proctordata->tsbenabled = (isset($quiz->tsbenabled) && $quiz->tsbenabled) ? 1 : 0;
             $proctordata->usermodified = $USER->id;
-
-            if($proctor = $DB->get_record('quizaccess_proctor', array('quizid'=> $quiz->id))) { 
+            $proctordata->reference_link = $quiz->reference_link;
+            if($proctor = $DB->get_record('quizaccess_proctor', array('quizid'=> $quiz->id))) {
                 $proctordata->id = $proctor->id;
                 $proctordata->timemodified = time();
                 $DB->update_record('quizaccess_proctor', $proctordata);
-            } else { 
+            } else {
                 $proctordata->timecreated = time();
                 $DB->insert_record('quizaccess_proctor', $proctordata);
             }
-        } 
+        }
 
     }
 
@@ -214,14 +217,16 @@ class quizaccess_proctor extends quiz_access_rule_base {
      */
     public static function get_settings_sql($quizid) : array {
         return [
-                'proctor.proctortype AS proctortype, '
-                . 'proctor.tsbenabled AS tsbenabled '
-                , 'LEFT JOIN {quizaccess_proctor} proctor ON proctor.quizid = quiz.id '
-                , []
+            'proctor.proctortype AS proctortype, '
+            . 'proctor.tsbenabled AS tsbenabled, '
+            . 'proctor.instructions AS instructions,'
+            . 'proctor.reference_link AS reference_link '
+            , 'LEFT JOIN {quizaccess_proctor} proctor ON proctor.quizid = quiz.id '
+            , []
         ];
     }
 
-   
+
 
     /**
      * Sets up the attempt (review or summary) page with any special extra
@@ -231,9 +236,14 @@ class quizaccess_proctor extends quiz_access_rule_base {
      */
     public function setup_attempt_page($page) {
         $page->set_title($this->quizobj->get_course()->shortname . ': ' . $page->title);
-        $page->set_popup_notification_allowed(false); // Prevent message notifications.
         $page->set_heading($page->title);
-        $page->set_pagelayout('secure');
+        $proctortype=$this->quizobj->get_quiz()->proctortype;
+        $local_proview_enabled = get_config('local_proview', 'enabled');
+        $quizaccess_proctor_setting_enabled = get_config('quizaccess_proctor', 'enableproctor');
+        if ( $local_proview_enabled && $quizaccess_proctor_setting_enabled && $proctortype !== 'noproctor'){
+            $page->set_pagelayout('secure');
+            $page->set_popup_notification_allowed(false); // Prevent message notifications.
+        }
     }
 
     /**
@@ -243,5 +253,6 @@ class quizaccess_proctor extends quiz_access_rule_base {
         $this->accessmanager->clear_session_access();
     }
 
-    
+
 }
+

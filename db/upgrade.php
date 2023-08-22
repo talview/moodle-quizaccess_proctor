@@ -39,6 +39,7 @@ function xmldb_quizaccess_proctor_upgrade($oldversion) {
 
     // Automatically generated Moodle v3.9.0 release upgrade line.
     // Put any upgrade step following this.
+
     if ($oldversion < 2023080101) {
 
         // Changing the default of field tsbenabled on table quizaccess_proctor to 0.
@@ -52,6 +53,40 @@ function xmldb_quizaccess_proctor_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023080101, 'quizaccess', 'proctor');
     }
 
+    if ($oldversion < 2023081001) {
+        // Define field reference_link to be added to quizaccess_proctor.
+        $table = new xmldb_table('quizaccess_proctor');
+        $field = new xmldb_field('instructions', XMLDB_TYPE_TEXT, null, null, null, null, null, 'reference_link');
+
+        // Conditionally launch add field reference_link.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Proctor savepoint reached.
+        upgrade_plugin_savepoint(true, 2023081001, 'quizaccess', 'proctor');
+    }
+
+    if ($oldversion < 2023081801) {
+        // Define field reference_link to be added to quizaccess_proctor.
+        $table = new xmldb_table('quizaccess_proctor');
+        $field = new xmldb_field('reference_link', XMLDB_TYPE_TEXT, null, null, null, null, null, 'timemodified');
+
+        // Conditionally launch add field reference_link.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        if ($dbman->field_exists($table, $field)) {
+            $records = $DB->get_records('quizaccess_proctor');
+            foreach ($records as $record) {
+                $record->reference_link = '';
+                $DB->update_record('quizaccess_proctor', $record);
+            }
+        }
+
+        // Proctor savepoint reached.
+        upgrade_plugin_savepoint(true, 2023081801, 'quizaccess', 'proctor');
+    }
     // Automatically generated Moodle v4.0.0 release upgrade line.
     // Put any upgrade step following this.
 
