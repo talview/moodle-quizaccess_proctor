@@ -41,7 +41,8 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2020 Catalyst IT
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class settings_provider {
+class settings_provider
+{
 
     /**
      * Insert form element.
@@ -52,7 +53,8 @@ class settings_provider {
      * @param string $before Insert element before.
      */
     protected static function insert_element(\mod_quiz_mod_form $quizform,
-                                             \MoodleQuickForm $mform, \HTML_QuickForm_element $element, $before = 'security') {
+                                             \MoodleQuickForm   $mform, \HTML_QuickForm_element $element, $before = 'security')
+    {
         $mform->insertElementBefore($element, $before);
     }
 
@@ -63,7 +65,8 @@ class settings_provider {
      * @param \MoodleQuickForm $mform the wrapped MoodleQuickForm.
      * @param string $elementname Element name.
      */
-    protected static function remove_element(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform, string  $elementname) {
+    protected static function remove_element(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform, string $elementname)
+    {
         if ($mform->elementExists($elementname)) {
             $mform->removeElement($elementname);
             $mform->setDefault($elementname, null);
@@ -77,7 +80,8 @@ class settings_provider {
      * @param \MoodleQuickForm $mform the wrapped MoodleQuickForm.
      * @param string $elementname Element name.
      */
-    protected static function add_help_button(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform, string $elementname) {
+    protected static function add_help_button(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform, string $elementname)
+    {
         if ($mform->elementExists($elementname)) {
             $mform->addHelpButton($elementname, $elementname, 'quizaccess_proctor');
         }
@@ -91,7 +95,8 @@ class settings_provider {
      * @param string $elementname Element name.
      * @param mixed $value Default value.
      */
-    protected static function set_default(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform, string  $elementname, $value) {
+    protected static function set_default(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform, string $elementname, $value)
+    {
         $mform->setDefault($elementname, $value);
     }
 
@@ -103,7 +108,8 @@ class settings_provider {
      * @param string $elementname Element name.
      * @param string $type Type of the form element.
      */
-    protected static function set_type(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform, string $elementname, string $type) {
+    protected static function set_type(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform, string $elementname, string $type)
+    {
         $mform->setType($elementname, $type);
     }
 
@@ -114,7 +120,8 @@ class settings_provider {
      * @param \MoodleQuickForm $mform the wrapped MoodleQuickForm.
      * @param string $elementname Element name.
      */
-    protected static function freeze_element(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform, string $elementname) {
+    protected static function freeze_element(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform, string $elementname)
+    {
         if ($mform->elementExists($elementname)) {
             $mform->freeze($elementname);
         }
@@ -126,20 +133,23 @@ class settings_provider {
      * @param \mod_quiz_mod_form $quizform the quiz settings form that is being built.
      * @param \MoodleQuickForm $mform the wrapped MoodleQuickForm.
      */
-    protected static function add_proctor_header_element(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform) {
-        global  $OUTPUT;
+    protected static function add_proctor_header_element(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform)
+    {
+        global $OUTPUT;
 
         $element = $mform->createElement('header', 'proctor', get_string('proctorsettings', 'quizaccess_proctor'));
         self::insert_element($quizform, $mform, $element);
 
     }
-    public static function validate_reference_links($value) {
+
+    public static function validate_reference_links($value)
+    {
         if (empty($value)) {
             return true;
         }
         $lines = preg_split('/\r\n|\r|\n/', $value);
         foreach ($lines as $line) {
-            if (!preg_match('~^((https?://)?([a-z0-9-]+\.)*[a-z0-9-]+\.[a-z]{2,}(?:/[^/]*)*):(.+)$~i', $line)) {
+            if (!preg_match('~^((https?://)?([a-z0-9-]+\.)*[a-z0-9-]+\.[a-z]{2,}(?:/[^/]*)*)::(.+)$~i', $line)) {
                 return false;
             }
         }
@@ -153,7 +163,8 @@ class settings_provider {
      * @param \mod_quiz_mod_form $quizform the quiz settings form that is being built.
      * @param \MoodleQuickForm $mform the wrapped MoodleQuickForm.
      */
-    protected static function add_proctor_usage_options(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform) {
+    protected static function add_proctor_usage_options(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform)
+    {
         $proctor_type_element = $mform->createElement(
             'select',
             'proctortype',
@@ -177,14 +188,14 @@ class settings_provider {
         self::set_type($quizform, $mform, 'instructions', PARAM_TEXT);
         self::set_default($quizform, $mform, 'instructions', '');
 
-        $reference_link_element=$mform->createElement(
+        $reference_link_element = $mform->createElement(
             'textarea',
             'reference_link',
-            get_string('reference_link','quizaccess_proctor'),
+            get_string('reference_link', 'quizaccess_proctor'),
             ['style' => 'width: 100%;']
         );
 
-        self::insert_element($quizform,$mform,$reference_link_element);
+        self::insert_element($quizform, $mform, $reference_link_element);
         self::set_type($quizform, $mform, 'reference_link', PARAM_TEXT);
         self::set_default($quizform, $mform, 'reference_link', '');
         self::add_help_button($quizform, $mform, 'reference_link');
@@ -194,33 +205,33 @@ class settings_provider {
         $tsb_enable_element = $mform->createElement(
             'checkbox',
             'tsbenabled',
-            get_string('tsbenable', 'quizaccess_proctor'))
-        ;
+            get_string('tsbenable', 'quizaccess_proctor'));
         self::insert_element($quizform, $mform, $tsb_enable_element);
     }
 
-     /**
+    /**
      * Add setting fields.
      *
      * @param \mod_quiz_mod_form $quizform the quiz settings form that is being built.
      * @param \MoodleQuickForm $mform the wrapped MoodleQuickForm.
      */
-    public static function add_proctor_settings_fields(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform) {
+    public static function add_proctor_settings_fields(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform)
+    {
         //if (self::can_configure_seb($quizform->get_context())) {
-            self::add_proctor_header_element($quizform, $mform);
-            self::add_proctor_usage_options($quizform, $mform);
-       // }
+        self::add_proctor_header_element($quizform, $mform);
+        self::add_proctor_usage_options($quizform, $mform);
+        // }
     }
 
 
-    
     /**
      * Hide proctor elements if required.
      *
      * @param \mod_quiz_mod_form $quizform the quiz settings form that is being built.
      * @param \MoodleQuickForm $mform the wrapped MoodleQuickForm.
      */
-    protected static function hide_proctor_elements(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform) {
+    protected static function hide_proctor_elements(\mod_quiz_mod_form $quizform, \MoodleQuickForm $mform)
+    {
         foreach (self::get_quiz_hideifs() as $elname => $rules) {
             if ($mform->elementExists($elname)) {
                 foreach ($rules as $hideif) {
@@ -235,33 +246,35 @@ class settings_provider {
         }
     }
 
-    
+
     /**
      * Returns a list of all options of proctor usage.
      *
      * @param \context $context Context used with capability checking selection options.
      * @return array
      */
-    public static function get_proctor_options(\context $context) : array {
-        
+    public static function get_proctor_options(\context $context): array
+    {
+
         $options[''] = get_string('selectproctor', 'quizaccess_proctor');
         $options['noproctor'] = get_string('noproctor', 'quizaccess_proctor');
         $options['ai_proctor'] = get_string('aiproctor', 'quizaccess_proctor');
         $options['record_and_review'] = get_string('recordandreview', 'quizaccess_proctor');
         $options['live_proctor'] = get_string('liveproctor', 'quizaccess_proctor');
-        
+
 
         return $options;
     }
 
-    
+
     /**
      * Check if settings is locked.
      *
      * @param int $quizid Quiz ID.
      * @return bool
      */
-    public static function is_proctor_settings_locked($quizid) : bool {
+    public static function is_proctor_settings_locked($quizid): bool
+    {
         if (empty($quizid)) {
             return false;
         }
@@ -275,7 +288,8 @@ class settings_provider {
      * @param stdClass $settings Quiz settings object.
      * @return stdClass Filtered object.
      */
-    private static function filter_by_prefix(\stdClass $settings): stdClass {
+    private static function filter_by_prefix(\stdClass $settings): stdClass
+    {
         $newsettings = new \stdClass();
         foreach ($settings as $name => $setting) {
             // Only add it, if not there.
@@ -292,7 +306,8 @@ class settings_provider {
      * @param stdClass $settings Quiz settings.
      * @return \stdClass
      */
-    private static function filter_by_settings_map(stdClass $settings) : stdClass {
+    private static function filter_by_settings_map(stdClass $settings): stdClass
+    {
         if (!isset($settings->proctor_proctor)) {
             return $settings;
         }
@@ -319,7 +334,8 @@ class settings_provider {
      * @param stdClass $settings Quiz settings.
      * @return stdClass Filtered settings.
      */
-    public static function filter_plugin_settings(stdClass $settings) : stdClass {
+    public static function filter_plugin_settings(stdClass $settings): stdClass
+    {
         $settings = self::filter_by_prefix($settings);
         $settings = self::filter_by_settings_map($settings);
 
@@ -332,7 +348,8 @@ class settings_provider {
      * @param \stdClass $settings Object containing settings.
      * @return \stdClass The modified settings object.
      */
-    private static function strip_all_prefixes(\stdClass $settings): stdClass {
+    private static function strip_all_prefixes(\stdClass $settings): stdClass
+    {
         $newsettings = new \stdClass();
         foreach ($settings as $name => $setting) {
             $newname = preg_replace("/^proctor_/", "", $name);
@@ -347,7 +364,8 @@ class settings_provider {
      * @param string $name String to add prefix to.
      * @return string String with prefix.
      */
-    public static function add_prefix(string $name): string {
+    public static function add_prefix(string $name): string
+    {
         if (strpos($name, 'proctor_') !== 0) {
             $name = 'proctor_' . $name;
         }
