@@ -185,8 +185,12 @@ class settings_provider
         );
 
         self::insert_element($quizform, $mform, $instructions_element);
-        self::set_type($quizform, $mform, 'instructions', PARAM_TEXT);
+        self::set_type($quizform, $mform, 'instructions', PARAM_RAW);
         self::set_default($quizform, $mform, 'instructions', '');
+        $mform->addElement('static', 'ckeditor_init', '', '
+        <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+        <script>CKEDITOR.replace("instructions");</script>');
+
 
         $reference_link_element = $mform->createElement(
             'textarea',

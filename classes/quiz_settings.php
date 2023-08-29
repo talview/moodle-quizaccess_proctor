@@ -43,7 +43,8 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2020 Catalyst IT
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class quiz_settings extends persistent {
+class quiz_settings extends persistent
+{
 
     /** Table name for the persistent. */
     const TABLE = 'quizaccess_proctor';
@@ -56,7 +57,8 @@ class quiz_settings extends persistent {
      *
      * @return array
      */
-    protected static function define_properties() : array {
+    protected static function define_properties(): array
+    {
         return [
             'quizid' => [
                 'type' => PARAM_INT,
@@ -77,10 +79,10 @@ class quiz_settings extends persistent {
                 'default' => '',
             ],
             'instructions' => [
-                'type' => PARAM_TEXT,
+                'type' => PARAM_RAW,
                 'default' => '',
             ],
-            
+
         ];
     }
 
@@ -92,15 +94,17 @@ class quiz_settings extends persistent {
      * @param int $quizid Quiz id.
      * @return false|\quizaccess_proctor\quiz_settings
      */
-    public static function get_by_quiz_id(int $quizid) {
+    public static function get_by_quiz_id(int $quizid)
+    {
         return self::get_record(['quizid' => $quizid]);
     }
 
-          
+
     /**
      * Use the boolean map to add Moodle boolean setting to config PList.
      */
-    private function process_bool_settings() {
+    private function process_bool_settings()
+    {
         $settings = $this->to_record();
         $map = $this->get_bool_proctor_setting_map();
         foreach ($settings as $setting => $value) {
@@ -115,7 +119,8 @@ class quiz_settings extends persistent {
      *
      * @param string $name Setting name matching one from self::get_bool_proctor_setting_map.
      */
-    private function process_bool_setting(string $name) {
+    private function process_bool_setting(string $name)
+    {
         $map = $this->get_bool_proctor_setting_map();
 
         if (!isset($map[$name])) {
@@ -126,12 +131,12 @@ class quiz_settings extends persistent {
         $this->plist->set_or_update_value($map[$name], new CFBoolean($enabled));
     }
 
-    
 
     /**
      * Turn return separated strings for URL filters into a PList array and add to config PList.
      */
-    private function process_url_filters() {
+    private function process_url_filters()
+    {
         $settings = $this->to_record();
         // Create rules to each expression provided and add to config.
         $urlfilterrules = [];
@@ -163,14 +168,15 @@ class quiz_settings extends persistent {
      * @param bool $isregex Regex or simple.
      * @return CFDictionary A PList dictionary.
      */
-    private function create_filter_rule(string $rulestring, bool $allowed, bool $isregex) : CFDictionary {
+    private function create_filter_rule(string $rulestring, bool $allowed, bool $isregex): CFDictionary
+    {
         $action = $allowed ? 1 : 0;
         return new CFDictionary([
-                    'action' => new CFNumber($action),
-                    'active' => new CFBoolean(true),
-                    'expression' => new CFString(trim($rulestring)),
-                    'regex' => new CFBoolean($isregex),
-                    ]);
+            'action' => new CFNumber($action),
+            'active' => new CFBoolean(true),
+            'expression' => new CFString(trim($rulestring)),
+            'regex' => new CFBoolean($isregex),
+        ]);
     }
 
     /**
@@ -178,7 +184,8 @@ class quiz_settings extends persistent {
      *
      * @return array Moodle setting as key, proctor setting as value.
      */
-    private function get_bool_proctor_setting_map() : array {
+    private function get_bool_proctor_setting_map(): array
+    {
         return [
             'activateurlfiltering' => 'URLFilterEnable',
             'allowspellchecking' => 'allowSpellCheck',
@@ -202,7 +209,8 @@ class quiz_settings extends persistent {
      * @param string|null $keys the allowed keys.
      * @return array of string, the separate keys.
      */
-    private function split_keys($keys) : array {
+    private function split_keys($keys): array
+    {
         $keys = preg_split('~[ \t\n\r,;]+~', $keys, -1, PREG_SPLIT_NO_EMPTY);
         foreach ($keys as $i => $key) {
             $keys[$i] = strtolower($key);
