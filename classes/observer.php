@@ -35,7 +35,6 @@ require_once($CFG->dirroot . '/mod/quiz/accessrule/proctor/vendor/autoload.php')
  * @copyright  2014 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 interface CustomThrowable extends \Throwable
 {
 
@@ -45,7 +44,9 @@ class CustomException extends \Exception implements CustomThrowable
 {
 
 }
-class quizaccess_proctor_observer {
+
+class quizaccess_proctor_observer
+{
 
     /** @var int indicates that course module was created */
     const CM_CREATED = 0;
@@ -82,19 +83,6 @@ class quizaccess_proctor_observer {
             return;
         }
         $eventdata = new \stdClass();
-        switch ($event->eventname) {
-            case '\core\event\course_module_created':
-                $eventdata->action = self::CM_CREATED;
-                break;
-            case '\core\event\course_module_updated':
-                $eventdata->action = self::CM_UPDATED;
-                break;
-            case '\core\event\course_module_deleted':
-                $eventdata->action = self::CM_DELETED;
-                break;
-            default:
-                return;
-        }
         $quiz = $DB->get_record('quiz', array('id' => $event->other['instanceid']));
         $quiz_proctor_settings = $DB->get_record('quizaccess_proctor', array('quizid' => $event->other['instanceid']));
         $eventdata->quiz_title = $event->other['name'];
@@ -113,6 +101,21 @@ class quizaccess_proctor_observer {
         $eventdata->timemodified = $quiz->timemodified;
         $eventdata->timecreated = $quiz->timecreated;
         $eventdata->userid = $event->userid;
+        switch ($event->eventname) {
+            case '\core\event\course_module_created':
+                if ($quiz_proctor_settings->proctortype === 'noproctor')
+                    return;
+                $eventdata->action = self::CM_CREATED;
+                break;
+            case '\core\event\course_module_updated':
+                $eventdata->action = self::CM_UPDATED;
+                break;
+            case '\core\event\course_module_deleted':
+                $eventdata->action = self::CM_DELETED;
+                break;
+            default:
+                return;
+        }
         try {
             $auth_response = self::generate_auth_token($api_base_url, $auth_payload);
             if (!$auth_response) {
@@ -128,11 +131,11 @@ class quizaccess_proctor_observer {
     }
 
 
-
-    private static function generate_auth_token($api_base_url, $payload) {
+    private static function generate_auth_token($api_base_url, $payload)
+    {
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => $api_base_url.'/auth',
+            CURLOPT_URL => $api_base_url . '/auth',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -161,10 +164,11 @@ class quizaccess_proctor_observer {
         }
     }
 
-    private static function send_quiz_details($api_base_url, $token, $eventdata) {
+    private static function send_quiz_details($api_base_url, $token, $eventdata)
+    {
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => $api_base_url.'/quiz',
+            CURLOPT_URL => $api_base_url . '/quiz',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -173,7 +177,7 @@ class quizaccess_proctor_observer {
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => json_encode($eventdata),
             CURLOPT_HTTPHEADER => [
-                "Authorization: Bearer ".$token,
+                "Authorization: Bearer " . $token,
                 "Content-Type: application/json"
             ],
         ]);
@@ -194,8 +198,9 @@ class quizaccess_proctor_observer {
         }
     }
 
-    public static function capture_error (\Throwable $err) {
-        \Sentry\init(['dsn' => 'https://61facdc5414c4c73ab2b17fe902bf9ba@o286634.ingest.sentry.io/5304587' ]);
+    public static function capture_error(\Throwable $err)
+    {
+        \Sentry\init(['dsn' => 'https://61facdc5414c4c73ab2b17fe902bf9ba@o286634.ingest.sentry.io/5304587']);
         \Sentry\captureException($err);
     }
 }
