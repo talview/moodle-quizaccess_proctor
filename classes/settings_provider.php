@@ -147,9 +147,15 @@ class settings_provider
         if (empty($value)) {
             return true;
         }
+        $pattern = '/^\[([^\]]+)\]\(([^)]+)\)$/i';
         $lines = preg_split('/\r\n|\r|\n/', $value);
         foreach ($lines as $line) {
-            if (!preg_match('~^((https?://)?([a-z0-9-]+\.)*[a-z0-9-]+\.[a-z]{2,}(?:/[^/]*)*)::(.+)$~i', $line)) {
+            if (!preg_match($pattern, $line)) {
+                return false;
+            }
+            preg_match($pattern, $line, $matches);
+            $url = $matches[2];
+            if (!filter_var($url, FILTER_VALIDATE_URL)) {
                 return false;
             }
         }
