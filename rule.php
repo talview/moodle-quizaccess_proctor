@@ -269,7 +269,8 @@ class quizaccess_proctor extends quiz_access_rule_base
     {
         $quizaccess_proctor_setting_enabled = get_config('quizaccess_proctor', 'enableproctor');
         $tsbenabled = $this->quizobj->get_quiz()->tsbenabled;
-        return ($quizaccess_proctor_setting_enabled && $tsbenabled);
+        $proctortype = $this->quizobj->get_quiz()->proctortype;
+        return ($quizaccess_proctor_setting_enabled && $tsbenabled && $proctortype !== 'noproctor');
     }
 
     public function redirect_to_tsb_link()
