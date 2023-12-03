@@ -275,8 +275,10 @@ class quizaccess_proctor extends quiz_access_rule_base
 
     public function redirect_to_tsb_link()
     {
-        global $PAGE;
-        $redirectURL = "tsb://" . explode("://", $PAGE->url)[1];
+        global $PAGE, $CFG;
+        $baseUrl = $CFG->wwwroot;
+        $path = "/mod/quiz/view.php?id=" . $PAGE->cm->id;
+        $redirectURL = $baseUrl . $path;
         $tsblink = "https://pages.talview.com/tsb/index.html?redirect_url=" . $redirectURL . "&user=" . $_SERVER ['HTTP_USER_AGENT'];
         $PAGE->requires->js_amd_inline('
             require(["jquery"], function($) {
