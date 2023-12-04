@@ -279,7 +279,7 @@ class quizaccess_proctor extends quiz_access_rule_base
         $baseUrl = $CFG->wwwroot;
         $path = "/mod/quiz/view.php?id=" . $PAGE->cm->id;
         $redirectURL = $baseUrl . $path;
-        $tsblink = "https://pages.talview.com/tsb/index.html?redirect_url=" . $redirectURL . "&user=" . $_SERVER ['HTTP_USER_AGENT'];
+        $tsblink = "https://pages.talview.com/tsb/index.html?redirect_url=" . urlencode($redirectURL) . "&user=" . urlencode($_SERVER['HTTP_USER_AGENT']);
         $PAGE->requires->js_amd_inline('
             require(["jquery"], function($) {
                 $(document).ready(function() {
