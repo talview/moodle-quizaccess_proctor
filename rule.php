@@ -39,7 +39,8 @@ require_once($CFG->dirroot . '/mod/quiz/accessrule/accessrulebase.php');
  * @copyright  2020 Catalyst IT
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class quizaccess_proctor extends quiz_access_rule_base {
+class quizaccess_proctor extends quiz_access_rule_base
+{
 
     /** @var access_manager $accessmanager Instance to manage the access to the quiz for this plugin. */
     private $accessmanager;
@@ -51,7 +52,8 @@ class quizaccess_proctor extends quiz_access_rule_base {
      * @param int $timenow the time that should be considered as 'now'.
      * @param access_manager $accessmanager the quiz accessmanager.
      */
-    public function __construct(quiz $quizobj, int $timenow, access_manager $accessmanager) {
+    public function __construct(quiz $quizobj, int $timenow, access_manager $accessmanager)
+    {
         parent::__construct($quizobj, $timenow);
         $this->accessmanager = $accessmanager;
     }
@@ -66,9 +68,9 @@ class quizaccess_proctor extends quiz_access_rule_base {
      *      time limits by the mod/quiz:ignoretimelimits capability.
      * @return quiz_access_rule_base|null the rule, if applicable, else null.
      */
-    public static function make (quiz $quizobj, $timenow, $canignoretimelimits) {
+    public static function make(quiz $quizobj, $timenow, $canignoretimelimits)
+    {
         $accessmanager = new access_manager($quizobj);
-
         return new self($quizobj, $timenow, $accessmanager);
     }
 
@@ -80,7 +82,8 @@ class quizaccess_proctor extends quiz_access_rule_base {
      * @param mod_quiz_mod_form $quizform the quiz settings form that is being built.
      * @param MoodleQuickForm $mform the wrapped MoodleQuickForm.
      */
-    public static function add_settings_form_fields(mod_quiz_mod_form $quizform, MoodleQuickForm $mform) {
+    public static function add_settings_form_fields(mod_quiz_mod_form $quizform, MoodleQuickForm $mform)
+    {
         settings_provider::add_proctor_settings_fields($quizform, $mform);
     }
 
@@ -94,13 +97,14 @@ class quizaccess_proctor extends quiz_access_rule_base {
      * @return array $errors the updated $errors array.
      */
     public static function validate_settings_form_fields(array $errors,
-                                                         array $data, $files, mod_quiz_mod_form $quizform) : array {
+                                                         array $data, $files, mod_quiz_mod_form $quizform): array
+    {
 
         $quizid = $data['instance'];
         $cmid = $data['coursemodule'];
         $context = $quizform->get_context();
 
-        $settings = settings_provider::filter_plugin_settings((object) $data);
+        $settings = settings_provider::filter_plugin_settings((object)$data);
 
         // Validate basic settings using persistent class.
         $quizsettings = (new quiz_settings())->from_record($settings);
@@ -132,7 +136,8 @@ class quizaccess_proctor extends quiz_access_rule_base {
      * @param object $quiz the data from the quiz form, including $quiz->id
      *      which is the id of the quiz being saved.
      */
-    public static function save_settings($quiz) {
+    public static function save_settings($quiz)
+    {
         global $USER, $DB;
         $context = context_module::instance($quiz->coursemodule);
 
@@ -168,7 +173,7 @@ class quizaccess_proctor extends quiz_access_rule_base {
             $proctordata->tsbenabled = (isset($quiz->tsbenabled) && $quiz->tsbenabled) ? 1 : 0;
             $proctordata->usermodified = $USER->id;
             $proctordata->reference_link = $quiz->reference_link;
-            if($proctor = $DB->get_record('quizaccess_proctor', array('quizid'=> $quiz->id))) {
+            if ($proctor = $DB->get_record('quizaccess_proctor', array('quizid' => $quiz->id))) {
                 $proctordata->id = $proctor->id;
                 $proctordata->timemodified = time();
                 $DB->update_record('quizaccess_proctor', $proctordata);
@@ -187,7 +192,8 @@ class quizaccess_proctor extends quiz_access_rule_base {
      * @param object $quiz the data from the database, including $quiz->id
      *      which is the id of the quiz being deleted.
      */
-    public static function delete_settings($quiz) {
+    public static function delete_settings($quiz)
+    {
         $quizsettings = quiz_settings::get_by_quiz_id($quiz->id);
         // Check that there are existing settings.
         if ($quizsettings !== false) {
@@ -215,7 +221,8 @@ class quizaccess_proctor extends quiz_access_rule_base {
      *        used named placeholders, and the placeholder names should start with the
      *        plugin name, to avoid collisions.
      */
-    public static function get_settings_sql($quizid) : array {
+    public static function get_settings_sql($quizid): array
+    {
         return [
             'proctor.proctortype AS proctortype, '
             . 'proctor.tsbenabled AS tsbenabled, '
@@ -227,32 +234,59 @@ class quizaccess_proctor extends quiz_access_rule_base {
     }
 
 
-
     /**
      * Sets up the attempt (review or summary) page with any special extra
      * properties required by this rule.
      *
      * @param moodle_page $page the page object to initialise.
      */
-    public function setup_attempt_page($page) {
+    public function setup_attempt_page($page)
+    {
         $page->set_title($this->quizobj->get_course()->shortname . ': ' . $page->title);
         $page->set_heading($page->title);
-        $proctortype=$this->quizobj->get_quiz()->proctortype;
+        $proctortype = $this->quizobj->get_quiz()->proctortype;
         $local_proview_enabled = get_config('local_proview', 'enabled');
         $quizaccess_proctor_setting_enabled = get_config('quizaccess_proctor', 'enableproctor');
-        if ( $local_proview_enabled && $quizaccess_proctor_setting_enabled && $proctortype !== 'noproctor'){
+        if ($local_proview_enabled && $quizaccess_proctor_setting_enabled && $proctortype !== 'noproctor') {
             $page->set_pagelayout('secure');
             $page->set_popup_notification_allowed(false); // Prevent message notifications.
+        }
+
+        if ($this->is_tsb_required() && !strpos($_SERVER ['HTTP_USER_AGENT'], "Proview-SB")) {
+            $this->redirect_to_tsb_link();
         }
     }
 
     /**
      * This is called when the current attempt at the quiz is finished.
      */
-    public function current_attempt_finished() {
+    public function current_attempt_finished()
+    {
         $this->accessmanager->clear_session_access();
     }
 
+    public function is_tsb_required()
+    {
+        $quizaccess_proctor_setting_enabled = get_config('quizaccess_proctor', 'enableproctor');
+        $tsbenabled = $this->quizobj->get_quiz()->tsbenabled;
+        $proctortype = $this->quizobj->get_quiz()->proctortype;
+        return ($quizaccess_proctor_setting_enabled && $tsbenabled && $proctortype !== 'noproctor');
+    }
 
+    public function redirect_to_tsb_link()
+    {
+        global $PAGE, $CFG;
+        $baseUrl = $CFG->wwwroot;
+        $path = "/mod/quiz/view.php?id=" . $PAGE->cm->id;
+        $redirectURL = $baseUrl . $path;
+        $tsblink = "https://pages.talview.com/tsb/index.html?redirect_url=" . urlencode($redirectURL) . "&user=" . urlencode($_SERVER['HTTP_USER_AGENT']);
+        $PAGE->requires->js_amd_inline('
+            require(["jquery"], function($) {
+                $(document).ready(function() {
+                    window.location.href = "' . $tsblink . '";
+                });
+            });
+        ');
+    }
 }
 
