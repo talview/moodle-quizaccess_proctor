@@ -250,6 +250,13 @@ class quizaccess_proctor extends quiz_access_rule_base
         if ($local_proview_enabled && $quizaccess_proctor_setting_enabled && $proctortype !== 'noproctor') {
             $page->set_pagelayout('secure');
             $page->set_popup_notification_allowed(false); // Prevent message notifications.
+            $page->requires->js_amd_inline('
+                require(["jquery"], function($) {
+                    $(document).ready(function() {
+                        $(".pagelayout-secure").find("#region-main > div > div.container-fluid.tertiary-navigation > div > div > a").css("display", "none");
+                    });
+                });
+            ');
         }
 
         if ($this->is_tsb_required() && !strpos($_SERVER ['HTTP_USER_AGENT'], "Proview-SB")) {
