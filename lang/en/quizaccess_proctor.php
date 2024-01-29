@@ -34,7 +34,6 @@ $string['proctortype_help'] = 'The type of proctoring applies to the quiz.';
 $string['tsbenable'] = 'Enable Talview Secure Browser';
 $string['selectproctor'] = 'Select Proctoring Type';
 $string['noproctor'] = 'No Proctoring';
-$string['aiproctor'] = 'AI Proctoring';
 $string['recorded'] = 'Recorded';
 $string['recordandreview'] = 'Record and Review';
 $string['liveproctor'] = 'Live Proctoring';
