@@ -268,7 +268,7 @@ class settings_provider
 
         $options[''] = get_string('selectproctor', 'quizaccess_proctor');
         $options['noproctor'] = get_string('noproctor', 'quizaccess_proctor');
-        $options['ai_proctor'] = get_string('aiproctor', 'quizaccess_proctor');
+        $options['ai_proctor'] = get_string('recorded', 'quizaccess_proctor');
         $options['record_and_review'] = get_string('recordandreview', 'quizaccess_proctor');
         $options['live_proctor'] = get_string('liveproctor', 'quizaccess_proctor');
 
