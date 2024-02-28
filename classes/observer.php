@@ -143,7 +143,7 @@ class quizaccess_proctor_observer
             $response = $curl->post($request_url, $json_payload);
             if ($curl->get_errno()) {
                 $error_msg = $curl->error;
-                throw new moodle_exception('errorapirequest', 'yourplugin', '', $error_msg);
+                throw new moodle_exception('errorapirequest', 'quizaccess_proctor', '', $error_msg);
             }
             $decoded_response = json_decode($response, true);
             if (!isset($decoded_response['access_token'])) {
@@ -171,7 +171,7 @@ class quizaccess_proctor_observer
             $response = $curl->post($request_url, $json_eventdata);
             if ($curl->get_errno()) {
                 $error_msg = $curl->error;
-                throw new moodle_exception('errorapirequest', 'yourplugin', '', $error_msg);
+                throw new moodle_exception('errorapirequest', 'quizaccess_proctor', '', $error_msg);
             }
             $decoded_response = json_decode($response, true);
             return $decoded_response;
