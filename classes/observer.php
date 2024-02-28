@@ -122,7 +122,7 @@ class quizaccess_proctor_observer
                 throw new CustomException("Auth Token Not generated");
                 return;
             }
-            $token = json_decode($auth_response)->access_token;
+            $token = $auth_response['access_token'];
             $response = self::send_quiz_details($api_base_url, $token, $eventdata);
         } catch (\Throwable $err) {
             self::capture_error($err);
@@ -130,35 +130,26 @@ class quizaccess_proctor_observer
 
     }
 
-
     private static function generate_auth_token($api_base_url, $payload)
     {
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $api_base_url . '/auth',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => json_encode($payload),
-            CURLOPT_HTTPHEADER => [
-                "Content-Type: application/json"
-            ],
-        ]);
+        global $CFG;
+        require_once($CFG->libdir . '/filelib.php');
+        $curl = new curl();
+        $headers = array('Content-Type: application/json');
+        $curl->setHeader($headers);
+        $request_url = $api_base_url . '/auth';
+        $json_payload = json_encode($payload);
         try {
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
-            $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-            curl_close($curl);
-            if ($err) {
-                throw new CustomException($err);
-            } elseif ($response && $httpcode != 200) {
-                throw new CustomException($response);
-            } else {
-                return $response;
+            $response = $curl->post($request_url, $json_payload);
+            if ($curl->get_errno()) {
+                $error_msg = $curl->error;
+                throw new moodle_exception('errorapirequest', 'yourplugin', '', $error_msg);
             }
+            $decoded_response = json_decode($response, true);
+            if (!isset($decoded_response['access_token'])) {
+                throw new CustomException("Auth Token Not generated");
+            }
+            return $decoded_response;
         } catch (\Throwable $err) {
             self::capture_error($err);
         }
@@ -166,33 +157,24 @@ class quizaccess_proctor_observer
 
     private static function send_quiz_details($api_base_url, $token, $eventdata)
     {
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $api_base_url . '/quiz',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => json_encode($eventdata),
-            CURLOPT_HTTPHEADER => [
-                "Authorization: Bearer " . $token,
-                "Content-Type: application/json"
-            ],
-        ]);
+        global $CFG;
+        require_once($CFG->libdir . '/filelib.php');
+        $curl = new curl();
+        $headers = array(
+            'Authorization: Bearer ' . $token,
+            'Content-Type: application/json'
+        );
+        $curl->setHeader($headers);
+        $request_url = $api_base_url . '/quiz';
+        $json_eventdata = json_encode($eventdata);
         try {
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
-            $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-            curl_close($curl);
-            if ($err) {
-                throw new CustomException($err);
-            } elseif ($response && $httpcode != 201) {
-                throw new CustomException($response);
-            } else {
-                return $response;
+            $response = $curl->post($request_url, $json_eventdata);
+            if ($curl->get_errno()) {
+                $error_msg = $curl->error;
+                throw new moodle_exception('errorapirequest', 'yourplugin', '', $error_msg);
             }
+            $decoded_response = json_decode($response, true);
+            return $decoded_response;
         } catch (\Throwable $err) {
             self::capture_error($err);
         }
