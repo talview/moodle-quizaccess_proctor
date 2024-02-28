@@ -52,3 +52,19 @@ $string['reference_link'] = 'Reference Link';
 $string['reference_link_help'] = 'Kindly provide the reference links in the format `[caption](url)`. For example, `[moodle](https://www.moodle.com)` one per line.';
 $string['invalid_reference_links'] = 'Please enter valid reference links in the format [caption](url). For example, [moodle](https://www.moodle.com) one per line.';
 $string['instructions'] = 'Instructions';
+$string['proview_url'] = 'Proview Endpoint URL';
+$string['proview_url_desc'] = 'Enter the Proview End point URL';
+$string['proview_playback_url'] = 'Proview Playback URL';
+$string['proview_playback_url_desc'] = 'Enter the Proview Playback URL provided by Talview';
+$string['proview_token'] = 'Proview Token';
+$string['proview_token_desc'] = 'For example: U9021015';
+$string['proview_enabled'] = 'Enabled';
+$string['proview_enabled_desc'] = 'Enable Proview for Moodle';
+$string['auto_password_injection_enabled'] = 'Automatic Password Injection';
+$string['auto_password_injection_enabled_desc'] = 'Enable Automatic Password Injection, Enabling this will auto inject quiz password if proview is enabled on admin level';
+$string['proview_acc_name'] = 'Proview Account Name';
+$string['proview_acc_name_desc'] = 'Account Name provided by Talview, If not provided use your organization name.';
+$string['root_dir'] = 'Root Directory';
+$string['root_dir_desc'] = 'Root Directory';
+
+

@@ -59,6 +59,54 @@ if ($hassiteconfig) {
     $default = '';
     $setting = new admin_setting_configtext($name, $title, $description, $default);
     $settings->add($setting);
-    
+
+    $name = 'quizaccess_proctor/proview_enabled';
+    $title = get_string('proview_enabled', 'quizaccess_proctor');
+    $description = get_string('proview_enabled_desc', 'quizaccess_proctor');
+    $default = false;
+    $setting = new admin_setting_configcheckbox($name, $title, $description, $default, true, false);
+    $settings->add($setting);
+
+    $name = 'quizaccess_proctor/auto_password_injection_enabled';
+    $title = get_string('auto_password_injection_enabled', 'quizaccess_proctor');
+    $description = get_string('auto_password_injection_enabled_desc', 'quizaccess_proctor');
+    $default = false;
+    $setting = new admin_setting_configcheckbox($name, $title, $description, $default, true, false);
+    $settings->add($setting);
+
+    $name = 'quizaccess_proctor/proview_token';
+    $title = get_string('proview_token', 'quizaccess_proctor');
+    $description = get_string('proview_token_desc', 'quizaccess_proctor');
+    $default = '';
+    $setting = new admin_setting_configtext($name, $title, $description, $default);
+    $settings->add($setting);
+
+    $name = 'quizaccess_proctor/proview_url';
+    $title = get_string('proview_url', 'quizaccess_proctor');
+    $description = get_string('proview_url_desc', 'quizaccess_proctor');
+    $default = '';
+    $setting = new admin_setting_configtext($name, $title, $description, $default);
+    $settings->add($setting);
+
+    $name = 'quizaccess_proctor/proview_playback_url';
+    $title = get_string('proview_playback_url', 'quizaccess_proctor');
+    $description = get_string('proview_playback_url_desc', 'quizaccess_proctor');
+    $default = '';
+    $setting = new admin_setting_configtext($name, $title, $description, $default);
+    $settings->add($setting);
+
+    $name = 'quizaccess_proctor/proview_acc_name';
+    $title = get_string('proview_acc_name', 'quizaccess_proctor');
+    $description = get_string('proview_acc_name_desc', 'quizaccess_proctor');
+    $default = '';
+    $setting = new admin_setting_configtext($name, $title, $description, $default);
+    $settings->add($setting);
+
+    $name = 'quizaccess_proctor/root_dir';
+    $title = get_string('root_dir', 'quizaccess_proctor');
+    $description = get_string('root_dir_desc', 'quizaccess_proctor');
+    $default = '/';
+    $setting = new admin_setting_configtext($name, $title, $description, $default);
+    $settings->add($setting);
 }
 
