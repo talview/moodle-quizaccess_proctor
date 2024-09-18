@@ -82,7 +82,22 @@ class quiz_settings extends persistent
                 'type' => PARAM_RAW,
                 'default' => '',
             ],
-
+            'sb_blacklisted_software_mac' => [
+                'type' => PARAM_TEXT,
+                'default' => '',
+            ],
+            'sb_blacklisted_software_windows' => [
+                'type' => PARAM_TEXT,
+                'default' => '',
+            ],
+            'sb_kiosk_mode_enable' => [
+                'type' => PARAM_INT,
+                'default' => 0,
+            ],
+            'sb_content_protection_enable' => [
+                'type' => PARAM_INT,
+                'default' => 1,
+            ],
         ];
     }
 

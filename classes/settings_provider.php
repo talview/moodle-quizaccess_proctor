@@ -194,7 +194,7 @@ class settings_provider
         self::set_type($quizform, $mform, 'instructions', PARAM_RAW);
         self::set_default($quizform, $mform, 'instructions', '');
         $mform->addElement('static', 'ckeditor_init', '', '
-        <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+        <script src="https://cdn.ckeditor.com/4.25.0-lts/standard/ckeditor.js"></script>
         <script>CKEDITOR.replace("instructions");</script>');
 
 
@@ -217,6 +217,45 @@ class settings_provider
             'tsbenabled',
             get_string('tsbenable', 'quizaccess_proctor'));
         self::insert_element($quizform, $mform, $tsb_enable_element);
+
+        
+        $sb_blacklisted_software_mac_element = $mform->createElement(
+            'textarea',
+            'sb_blacklisted_software_mac',
+            get_string('sb_blacklisted_software_mac', 'quizaccess_proctor'),
+            ['style' => 'width: 100%;']
+        );
+
+        self::insert_element($quizform, $mform, $sb_blacklisted_software_mac_element);
+        self::set_type($quizform, $mform, 'sb_blacklisted_software_mac', PARAM_TEXT);
+        self::set_default($quizform, $mform, 'sb_blacklisted_software_mac', '');
+        self::add_help_button($quizform, $mform, 'sb_blacklisted_software_mac');
+        $mform->addRule('sb_blacklisted_software_mac', get_string('sb_invalid_blacklisted_software_format', 'quizaccess_proctor'), 'callback', 'quizaccess_proctor\settings_provider::validate_blacklisted_softwares');
+
+        $sb_blacklisted_software_windows_element = $mform->createElement(
+            'textarea',
+            'sb_blacklisted_software_windows',
+            get_string('sb_blacklisted_software_windows', 'quizaccess_proctor'),
+            ['style' => 'width: 100%;']
+        );
+
+        self::insert_element($quizform, $mform, $sb_blacklisted_software_windows_element);
+        self::set_type($quizform, $mform, 'sb_blacklisted_software_windows', PARAM_TEXT);
+        self::set_default($quizform, $mform, 'sb_blacklisted_software_windows', '');
+        self::add_help_button($quizform, $mform, 'sb_blacklisted_software_windows');
+        $mform->addRule('sb_blacklisted_software_windows', get_string('sb_invalid_blacklisted_software_format', 'quizaccess_proctor'), 'callback', 'quizaccess_proctor\settings_provider::validate_blacklisted_softwares');
+
+        $sb_kiosk_mode_enable_element = $mform->createElement(
+            'checkbox',
+            'sb_kiosk_mode_enable',
+            get_string('sb_kiosk_mode_enable', 'quizaccess_proctor'));
+        self::insert_element($quizform, $mform, $sb_kiosk_mode_enable_element);
+
+        $sb_content_protection_enable_element = $mform->createElement(
+            'checkbox',
+            'sb_content_protection_enable',
+            get_string('sb_content_protection_enable', 'quizaccess_proctor'));
+        self::insert_element($quizform, $mform, $sb_content_protection_enable_element);
     }
 
     /**

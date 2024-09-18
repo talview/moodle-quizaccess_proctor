@@ -173,6 +173,7 @@ class quizaccess_proctor extends quiz_access_rule_base
             $proctordata->tsbenabled = (isset($quiz->tsbenabled) && $quiz->tsbenabled) ? 1 : 0;
             $proctordata->usermodified = $USER->id;
             $proctordata->reference_link = $quiz->reference_link;
+            // Add remaining SB params after updating DB
             if ($proctor = $DB->get_record('quizaccess_proctor', array('quizid' => $quiz->id))) {
                 $proctordata->id = $proctor->id;
                 $proctordata->timemodified = time();
