@@ -92,10 +92,10 @@ class quizaccess_proctor_observer
         $eventdata->proctoring_enabled = !($quiz_proctor_settings->proctortype == 'noproctor');
         $eventdata->proctoring_type = ($quiz_proctor_settings->proctortype == 'noproctor') ? NULL : $quiz_proctor_settings->proctortype;
         $eventdata->tsb_enabled = boolval($quiz_proctor_settings->tsbenabled);
-        $eventdata->blacklisted_windows_softwares = $quiz_proctor_settings->sb_blacklisted_software_windows;
-        $eventdata->blacklisted_mac_softwares = $quiz_proctor_settings->sb_blacklisted_software_mac;
-        $eventdata->minimize_permitted = boolval($quiz_proctor_settings->sb_kiosk_mode_enable);
-        $eventdata->screen_protection = boolval($quiz_proctor_settings->sb_content_protection_enable);
+        $eventdata->blacklisted_windows_softwares = $quiz_proctor_settings->blacklisted_softwares_win;
+        $eventdata->blacklisted_mac_softwares = $quiz_proctor_settings->blacklisted_softwares_mac;
+        $eventdata->minimize_permitted = boolval($quiz_proctor_settings->sb_kiosk_mode);
+        $eventdata->screen_protection = boolval($quiz_proctor_settings->sb_content_protection);
         $eventdata->attempts = 0;
         $eventdata->timeopen = (int)$quiz->timeopen;
         $eventdata->timeclose = (int)$quiz->timeclose;

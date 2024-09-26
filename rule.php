@@ -154,6 +154,10 @@ class quizaccess_proctor extends quiz_access_rule_base
             $settings->instructions = $quizsettings->get('instructions');
             $settings->tsbenabled = $quizsettings->get('tsbenabled');
             $settings->reference_link = $quizsettings->get('reference_link');
+            $settings->blacklisted_softwares_win = $quizsettings->get('blacklisted_softwares_win');
+            $settings->blacklisted_softwares_mac = $quizsettings->get('blacklisted_softwares_mac');
+            $settings->sb_kiosk_mode = $quizsettings->get('sb_kiosk_mode');
+            $settings->sb_content_procetion = $quizsettings->get('sb_content_protection');
         }
         if (empty($quizsettings)) {
             $quizsettings = new quiz_settings(0, $settings);
@@ -173,6 +177,11 @@ class quizaccess_proctor extends quiz_access_rule_base
             $proctordata->tsbenabled = (isset($quiz->tsbenabled) && $quiz->tsbenabled) ? 1 : 0;
             $proctordata->usermodified = $USER->id;
             $proctordata->reference_link = $quiz->reference_link;
+            $proctordata->blacklisted_softwares_win = $quiz->blacklisted_softwares_win;
+            $proctordata->blacklisted_softwares_mac = $quiz->blacklisted_softwares_mac;
+            $proctordata->sb_kiosk_mode = (isset($quiz->sb_kiosk_mode) && $quiz->sb_kiosk_mode) ? 1 : 0;
+            $proctordata->sb_content_protection = (isset($quiz->sb_content_protection) && $quiz->sb_content_protection) ? 1 : 0;
+
             // Add remaining SB params after updating DB
             if ($proctor = $DB->get_record('quizaccess_proctor', array('quizid' => $quiz->id))) {
                 $proctordata->id = $proctor->id;
@@ -228,7 +237,11 @@ class quizaccess_proctor extends quiz_access_rule_base
             'proctor.proctortype AS proctortype, '
             . 'proctor.tsbenabled AS tsbenabled, '
             . 'proctor.instructions AS instructions,'
-            . 'proctor.reference_link AS reference_link '
+            . 'proctor.reference_link AS reference_link, '
+            . 'proctor.blacklisted_softwares_win AS blacklisted_softwares_win, '
+            . 'proctor.blacklisted_softwares_mac AS blacklisted_softwares_mac, '
+            . 'proctor.sb_kiosk_mode AS sb_kiosk_mode, '
+            . 'proctor.sb_content_protection AS sb_content_protection '
             , 'LEFT JOIN {quizaccess_proctor} proctor ON proctor.quizid = quiz.id '
             , []
         ];
