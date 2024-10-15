@@ -90,5 +90,39 @@ function xmldb_quizaccess_proctor_upgrade($oldversion) {
     // Automatically generated Moodle v4.0.0 release upgrade line.
     // Put any upgrade step following this.
 
+     if ($oldversion < 2024092605) {
+         // Define the table and fields to be added to quizaccess_proctor.
+         $table = new xmldb_table('quizaccess_proctor');
+         $fields = [
+             new xmldb_field('blacklisted_softwares_win', XMLDB_TYPE_TEXT, null, null, null, null, null, 'reference_link'),
+             new xmldb_field('blacklisted_softwares_mac', XMLDB_TYPE_TEXT, null, null, null, null, null, 'blacklisted_softwares_win'),
+             new xmldb_field('sb_kiosk_mode', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0', 'blacklisted_softwares_mac'),
+             new xmldb_field('sb_content_protection', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '1', 'sb_kiosk_mode'),
+         ];
+
+         // Conditionally launch add fields.
+         foreach ($fields as $field) {
+             if (!$dbman->field_exists($table, $field)) {
+                 $dbman->add_field($table, $field);
+             }
+         }
+
+         // Update existing records if the first field has been added.
+         if ($dbman->field_exists($table, $fields[0])) {
+             $records = $DB->get_records('quizaccess_proctor');
+             foreach ($records as $record) {
+                 $record->sb_blacklisted_software_windows = '';
+                 $record->sb_blacklisted_software_mac = '';
+                 $record->sb_kiosk_mode_enable = 0;
+                 $record->sb_content_protection_enable = 0;
+                 $DB->update_record('quizaccess_proctor', $record);
+             }
+         }
+
+         // Proctor savepoint reached.
+         upgrade_plugin_savepoint(true, 2024092605, 'quizaccess', 'proctor');
+     }
+
+
     return true;
 }

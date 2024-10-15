@@ -217,6 +217,50 @@ class settings_provider
             'tsbenabled',
             get_string('tsbenable', 'quizaccess_proctor'));
         self::insert_element($quizform, $mform, $tsb_enable_element);
+        
+        $sb_blacklisted_software_mac_element = $mform->createElement(
+            'textarea',
+            'blacklisted_softwares_mac',
+            get_string('blacklisted_softwares_mac', 'quizaccess_proctor'),
+            ['style' => 'width: 100%;']
+        );
+
+        self::insert_element($quizform, $mform, $sb_blacklisted_software_mac_element);
+        self::set_type($quizform, $mform, 'blacklisted_softwares_mac', PARAM_TEXT);
+        self::set_default($quizform, $mform, 'blacklisted_softwares_mac', '');
+        self::add_help_button($quizform, $mform, 'blacklisted_softwares_mac');
+
+
+        $sb_blacklisted_software_windows_element = $mform->createElement(
+            'textarea',
+            'blacklisted_softwares_win',
+            get_string('blacklisted_softwares_win', 'quizaccess_proctor'),
+            ['style' => 'width: 100%;']
+        );
+
+        self::insert_element($quizform, $mform, $sb_blacklisted_software_windows_element);
+        self::set_type($quizform, $mform, 'blacklisted_softwares_win', PARAM_TEXT);
+        self::set_default($quizform, $mform, 'blacklisted_softwares_win', '');
+        self::add_help_button($quizform, $mform, 'blacklisted_softwares_win');
+
+        $sb_kiosk_mode_enable_element = $mform->createElement(
+            'checkbox',
+            'sb_kiosk_mode',
+            get_string('sb_kiosk_mode_enable', 'quizaccess_proctor'));
+        self::insert_element($quizform, $mform, $sb_kiosk_mode_enable_element);
+
+        $sb_content_protection_enable_element = $mform->createElement(
+            'checkbox',
+            'sb_content_protection',
+            get_string('sb_content_protection_enable', 'quizaccess_proctor'));
+        self::insert_element($quizform, $mform, $sb_content_protection_enable_element);
+        self::set_default($quizform, $mform, 'sb_content_protection', 1);
+
+        $mform->hideIf('blacklisted_softwares_mac', 'tsbenabled', 'notchecked');
+        $mform->hideIf('blacklisted_softwares_win', 'tsbenabled', 'notchecked');
+        $mform->hideIf('sb_kiosk_mode', 'tsbenabled', 'notchecked');
+        $mform->hideIf('sb_content_protection', 'tsbenabled', 'notchecked');
+
     }
 
     /**
