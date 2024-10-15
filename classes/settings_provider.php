@@ -194,7 +194,7 @@ class settings_provider
         self::set_type($quizform, $mform, 'instructions', PARAM_RAW);
         self::set_default($quizform, $mform, 'instructions', '');
         $mform->addElement('static', 'ckeditor_init', '', '
-        <script src="https://cdn.ckeditor.com/4.25.0-lts/standard/ckeditor.js"></script>
+        <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
         <script>CKEDITOR.replace("instructions");</script>');
 
 
