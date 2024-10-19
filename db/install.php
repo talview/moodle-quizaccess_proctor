@@ -55,10 +55,6 @@ function xmldb_quizaccess_proctor_install() {
                 $proctorsettings->timecreated = time();
                 $proctorsettings->timemodified = time();
                 $proctorsettings->reference_link = '';
-                $proctorsettings->blacklisted_softwares_win = '';
-                $proctorsettings->blacklisted_softwares_mac = '';
-                $proctorsettings->sb_kiosk_mode = 0;
-                $proctorsettings->sb_content_protection = 1;
 
                 $DB->insert_record('quizaccess_proctor', $proctorsettings);
 

@@ -16,10 +16,6 @@
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="reference_link" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="instructions" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="blacklisted_softwares_win" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="blacklisted_softwares_mac" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="sb_kiosk_mode" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="sb_content_protection" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="1" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
