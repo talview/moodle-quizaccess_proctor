@@ -123,6 +123,45 @@ function xmldb_quizaccess_proctor_upgrade($oldversion) {
          upgrade_plugin_savepoint(true, 2024092605, 'quizaccess', 'proctor');
      }
 
+    if ($oldversion < 2025052100) {
+
+        $timecreated = time();
+
+        $sql = "SELECT q.id AS quizid,
+                       cm.id AS cmid
+                  FROM {quiz} q
+             LEFT JOIN {course_modules} cm ON cm.instance = q.id AND cm.module = (
+                           SELECT id FROM {modules} WHERE name = :modulename
+                       )
+             LEFT JOIN {quizaccess_proctor} p ON q.id = p.quizid
+                 WHERE p.quizid IS NULL";
+
+
+            $params = ['modulename' => 'quiz'];
+            $records = $DB->get_records_sql($sql, $params);
+
+        foreach ($records as $record) {
+            $data = new stdClass();
+            $data->quizid = $record->quizid;
+            $data->cmid = $record->cmid;
+            $data->proctortype = 'noproctor';
+            $data->tsbenabled = 0;
+            $data->usermodified = 2;
+            $data->timecreated = $timecreated;
+            $data->timemodified = 0;
+            $data->reference_link = '';
+            $data->instructions = '';
+            $data->blacklisted_softwares_win = '';
+            $data->blacklisted_softwares_mac = '';
+            $data->sb_kiosk_mode = 0;
+            $data->sb_content_protection = 0;
+
+            $DB->insert_record('quizaccess_proctor', $data);
+        }
+
+        // Proctor savepoint reached.
+        upgrade_plugin_savepoint(true, 2025052100, 'quizaccess', 'proctor');
+    }
 
     return true;
 }
