@@ -31,7 +31,7 @@ use \quizaccess_proctor\event\access_prevented;
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/mod/quiz/accessrule/accessrulebase.php');
+use mod_quiz\local\access_rule_base;
 
 /**
  * Implementation of the quizaccess_proctor plugin.
@@ -39,7 +39,7 @@ require_once($CFG->dirroot . '/mod/quiz/accessrule/accessrulebase.php');
  * @copyright  2020 Catalyst IT
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class quizaccess_proctor extends quiz_access_rule_base
+class quizaccess_proctor extends access_rule_base
 {
 
     /** @var access_manager $accessmanager Instance to manage the access to the quiz for this plugin. */
@@ -48,11 +48,11 @@ class quizaccess_proctor extends quiz_access_rule_base
     /**
      * Create an instance of this rule for a particular quiz.
      *
-     * @param quiz $quizobj information about the quiz in question.
+     * @param mod_quiz\quiz_settings $quizobj information about the quiz in question.
      * @param int $timenow the time that should be considered as 'now'.
      * @param access_manager $accessmanager the quiz accessmanager.
      */
-    public function __construct(quiz $quizobj, int $timenow, access_manager $accessmanager)
+    public function __construct(mod_quiz\quiz_settings $quizobj, int $timenow, access_manager $accessmanager)
     {
         parent::__construct($quizobj, $timenow);
         $this->accessmanager = $accessmanager;
@@ -62,13 +62,13 @@ class quizaccess_proctor extends quiz_access_rule_base
      * Return an appropriately configured instance of this rule, if it is applicable
      * to the given quiz, otherwise return null.
      *
-     * @param quiz $quizobj information about the quiz in question.
+     * @param mod_quiz\quiz_settings $quizobj information about the quiz in question.
      * @param int $timenow the time that should be considered as 'now'.
      * @param bool $canignoretimelimits whether the current user is exempt from
      *      time limits by the mod/quiz:ignoretimelimits capability.
      * @return quiz_access_rule_base|null the rule, if applicable, else null.
      */
-    public static function make(quiz $quizobj, $timenow, $canignoretimelimits)
+    public static function make (mod_quiz\quiz_settings $quizobj, $timenow, $canignoretimelimits)
     {
         $accessmanager = new access_manager($quizobj);
         return new self($quizobj, $timenow, $accessmanager);
