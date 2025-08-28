@@ -13,10 +13,15 @@ name: Upload Release Asset
 jobs:
   build:
     name: Upload Release Asset
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Setup PHP and Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1' # Adjust if your Moodle stack uses a different version (e.g., 8.0/7.4)
+          tools: composer:v2
       - name: Build project # This would actually build your project, using zip for an example artifact
         run: |
           composer install
