@@ -96,6 +96,8 @@ class quizaccess_proctor_observer
         $eventdata->blacklisted_mac_softwares = $quiz_proctor_settings->blacklisted_softwares_mac;
         $eventdata->minimize_permitted = boolval($quiz_proctor_settings->sb_kiosk_mode);
         $eventdata->screen_protection = boolval($quiz_proctor_settings->sb_content_protection);
+        $eventdata->candidate_instructions = isset($quiz_proctor_settings->instructions)
+            ? (string)$quiz_proctor_settings->instructions : '';
         $eventdata->attempts = 0;
         $eventdata->timeopen = (int)$quiz->timeopen;
         $eventdata->timeclose = (int)$quiz->timeclose;

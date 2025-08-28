@@ -184,18 +184,26 @@ class settings_provider
         self::add_help_button($quizform, $mform, 'proctortype');
 
         $instructions_element = $mform->createElement(
-            'textarea',
+            'editor',
             'instructions',
             get_string('instructions', 'quizaccess_proctor'),
-            ['style' => 'width: 100%;']
+            null,
+            null
         );
 
         self::insert_element($quizform, $mform, $instructions_element);
         self::set_type($quizform, $mform, 'instructions', PARAM_RAW);
-        self::set_default($quizform, $mform, 'instructions', '');
-        $mform->addElement('static', 'ckeditor_init', '', '
-        <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
-        <script>CKEDITOR.replace("instructions");</script>');
+        $defaultinstructions = ['text' => '', 'format' => FORMAT_HTML];
+        if (method_exists($quizform, 'get_instance')) {
+            $quizid = $quizform->get_instance();
+            if (!empty($quizid)) {
+                $existing = \quizaccess_proctor\quiz_settings::get_by_quiz_id($quizid);
+                if ($existing) {
+                    $defaultinstructions['text'] = (string)$existing->get('instructions');
+                }
+            }
+        }
+        self::set_default($quizform, $mform, 'instructions', $defaultinstructions);
 
 
         $reference_link_element = $mform->createElement(

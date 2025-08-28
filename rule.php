@@ -173,7 +173,11 @@ class quizaccess_proctor extends quiz_access_rule_base
             $proctordata->quizid = $quiz->id;
             $proctordata->cmid = $cm->id;
             $proctordata->proctortype = $quiz->proctortype;
-            $proctordata->instructions = $quiz->instructions;
+            if (is_array($quiz->instructions) && array_key_exists('text', $quiz->instructions)) {
+                $proctordata->instructions = $quiz->instructions['text'];
+            } else {
+                $proctordata->instructions = $quiz->instructions;
+            }
             $proctordata->tsbenabled = (isset($quiz->tsbenabled) && $quiz->tsbenabled) ? 1 : 0;
             $proctordata->usermodified = $USER->id;
             $proctordata->reference_link = $quiz->reference_link;
