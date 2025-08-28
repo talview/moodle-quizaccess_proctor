@@ -5,8 +5,9 @@ on:
        - "*"
 #      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
   pull_request:
+    # Run CI for any PR (opened, synchronize, reopened) across all branches
     branches:
-      - release/*
+      - '**'
 
 name: Upload Release Asset
 
